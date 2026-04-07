@@ -136,15 +136,16 @@ export default function HomePage() {
             {courses.map((course) => (
               <Card
                 key={course.id}
-                className="group flex flex-col border-[var(--edge)] bg-[var(--surface)] hover:bg-[var(--surface-raised)] hover:border-[var(--gold)]/40 hover:-translate-y-1 transition-all duration-300 rounded-sm overflow-hidden"
+                className="glow-card gradient-border group flex flex-col border-[var(--edge)] bg-[var(--surface)] hover:bg-[var(--surface-raised)] hover:border-[var(--gold)]/40 rounded-sm overflow-hidden"
               >
-                <div className="h-1 w-0 bg-gradient-to-r from-[var(--gold)] to-[var(--gold-bright)] group-hover:w-full transition-all duration-500" />
+                {/* animated top accent bar */}
+                <div className="h-[3px] w-0 bg-gradient-to-r from-[var(--gold)] to-[var(--gold-bright)] group-hover:w-full transition-all duration-500" />
                 <CardHeader className="pb-3 pt-6 px-6">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="text-4xl border border-[var(--edge)] p-3 bg-[var(--ink)] rounded-sm group-hover:border-[var(--gold)]/50 transition-colors">
+                    <div className="text-4xl border border-[var(--edge)] p-3 bg-[var(--ink)] rounded-sm group-hover:border-[var(--gold)]/50 group-hover:bg-[var(--gold-dim)]/30 transition-all duration-300">
                       {course.icon}
                     </div>
-                    <Badge className="font-mono text-[10px] uppercase tracking-widest bg-[var(--gold-dim)] text-[var(--gold)] border border-[var(--gold)]/30 rounded-none hover:bg-[var(--gold)] hover:text-[var(--ink)]">
+                    <Badge className="font-mono text-[10px] uppercase tracking-widest bg-[var(--gold-dim)] text-[var(--gold)] border border-[var(--gold)]/30 rounded-none hover:bg-[var(--gold)] hover:text-[var(--ink)] transition-colors">
                       {course.badge}
                     </Badge>
                   </div>
