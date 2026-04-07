@@ -158,32 +158,32 @@ export default function HomePage() {
                 </CardHeader>
 
                 <CardContent className="flex-1 space-y-4 px-6">
-                  <div className="flex items-center gap-4 text-sm pt-2">
+                  {/* Rating stars */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <div className="flex items-center gap-0.5">
+                      {[1,2,3,4,5].map((s) => (
+                        <Star key={s} className={`h-3.5 w-3.5 ${s <= Math.round(course.rating) ? "text-[var(--gold)] fill-[var(--gold)]" : "text-[var(--edge-bright)]"}`} />
+                      ))}
+                    </div>
+                    <span className="text-xs font-mono text-[var(--gold)] font-bold">{course.rating}</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1.5 text-[var(--frost-dim)] font-mono text-xs">
                       <Clock className="h-3.5 w-3.5 text-[var(--gold)]" />
                       {course.duration}
                     </div>
-                    <div
-                      className={`flex items-center gap-1.5 font-mono text-xs ${
-                        levelColorMap[course.level] ?? "text-[var(--frost-dim)]"
-                      }`}
-                    >
+                    <div className={`flex items-center gap-1.5 font-mono text-xs ${levelColorMap[course.level] ?? "text-[var(--frost-dim)]"}`}>
                       <BarChart2 className="h-3.5 w-3.5 opacity-70" />
                       {course.level}
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2 pt-2">
+                  <div className="flex flex-wrap gap-2 pt-1">
                     {course.syllabus[0].topics.slice(0, 3).map((t) => (
-                      <span
-                        key={t}
-                        className="text-[10px] font-mono tracking-wider px-2 py-1 bg-[var(--ink)] border border-[var(--edge)] text-[var(--frost-dim)] uppercase"
-                      >
+                      <span key={t} className="text-[10px] font-mono tracking-wider px-2 py-1 bg-[var(--ink)] border border-[var(--edge)] text-[var(--frost-dim)] uppercase hover:border-[var(--gold)]/30 hover:text-[var(--gold)] transition-colors cursor-default">
                         {t.split(" ").slice(0, 2).join(" ")}
                       </span>
                     ))}
-                    <span className="text-[10px] font-mono tracking-wider px-2 py-1 bg-[var(--ink)] border border-[var(--edge)] text-[var(--frost-dim)] uppercase">
-                      +more
-                    </span>
+                    <span className="text-[10px] font-mono tracking-wider px-2 py-1 bg-[var(--ink)] border border-[var(--edge)] text-[var(--frost-dim)] uppercase">+more</span>
                   </div>
                 </CardContent>
 
