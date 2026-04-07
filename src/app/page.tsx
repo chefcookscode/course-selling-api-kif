@@ -263,18 +263,56 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 bg-[var(--ink-deep)] text-center text-[var(--frost-faint)] text-sm border-t border-[var(--edge)]">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-black font-playfair bg-gradient-to-br from-[var(--gold-bright)] to-[var(--gold)] bg-clip-text text-transparent">
-              KIF
-            </span>
-            <span className="font-sans font-bold text-[var(--frost-dim)]">Academy</span>
+      <footer className="py-14 px-4 bg-[var(--ink-deep)] border-t border-[var(--edge)]">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-8 w-8 rounded-lg bg-[var(--gold)] flex items-center justify-center border border-[var(--edge-bright)]">
+                  <BookOpen className="h-4 w-4 text-[var(--ink)]" />
+                </div>
+                <span className="text-xl font-black font-playfair bg-gradient-to-br from-[var(--gold-bright)] to-[var(--gold)] bg-clip-text text-transparent">KIF</span>
+                <span className="font-sans font-bold text-[var(--frost-dim)]">Academy</span>
+              </div>
+              <p className="text-[var(--frost-faint)] text-sm leading-relaxed max-w-xs">
+                Expert-led tech education for the next generation of developers and engineers.
+              </p>
+            </div>
+            {/* Quick Links */}
+            <div>
+              <p className="text-[10px] font-mono tracking-widest uppercase text-[var(--gold)] mb-4">Quick Links</p>
+              <div className="flex flex-col gap-2">
+                {["Courses", "Why Us", "Contact"].map((item) => (
+                  <Link key={item} href={`#${item.toLowerCase().replace(" ", "-")}`}
+                    className="hover-underline text-[var(--frost-faint)] hover:text-[var(--gold)] transition-colors text-sm w-fit">
+                    {item}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            {/* Legal */}
+            <div>
+              <p className="text-[10px] font-mono tracking-widest uppercase text-[var(--gold)] mb-4">Legal</p>
+              <div className="flex flex-col gap-2">
+                {["Privacy Policy", "Terms of Service"].map((item) => (
+                  <Link key={item} href="#"
+                    className="hover-underline text-[var(--frost-faint)] hover:text-[var(--gold)] transition-colors text-sm w-fit">
+                    {item}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
-          <p className="font-mono text-xs tracking-wider">© {new Date().getFullYear()} KIPM Innovators Foundation. All rights reserved.</p>
-          <div className="flex gap-6 font-mono text-xs uppercase tracking-wider">
-            <Link href="#" className="hover:text-[var(--gold)] transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-[var(--gold)] transition-colors">Terms</Link>
+          <div className="border-t border-[var(--edge)] pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="font-mono text-[11px] tracking-wider text-[var(--frost-faint)]">
+              © {new Date().getFullYear()} KIPM Innovators Foundation. All rights reserved.
+            </p>
+            <div className="flex gap-4 items-center">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--frost-faint)]">Made with</span>
+              <span className="text-[var(--gold)]">♥</span>
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--frost-faint)]">in India</span>
+            </div>
           </div>
         </div>
       </footer>
