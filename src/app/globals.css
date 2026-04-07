@@ -154,3 +154,31 @@ html {
   transition: opacity 0.35s ease;
 }
 .gradient-border:hover::before { opacity: 1; }
+
+/* ─── Utility: hover-underline animated ─────────────────── */
+.hover-underline {
+  position: relative;
+}
+.hover-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+.hover-underline:hover::after { width: 100%; }
+
+/* ─── Utility: shimmer text ─────────────────────────────── */
+.shimmer-text {
+  background: linear-gradient(90deg,
+    var(--gold) 0%, var(--gold-bright) 40%,
+    #fff8f0 50%, var(--gold-bright) 60%, var(--gold) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmerGold 3.5s linear infinite;
+}
