@@ -161,8 +161,19 @@ export default async function CourseDetailPage({ params }: PageProps) {
       </div>
 
       {/* Footer */}
-      <footer className="py-12 px-4 border-t border-[var(--edge)] bg-[var(--ink-deep)] text-center text-[var(--frost-faint)] text-xs font-mono tracking-widest uppercase mt-12">
-        <p>© {new Date().getFullYear()} KIPM Innovators Foundation. All rights reserved.</p>
+      <footer className="py-10 px-4 border-t border-[var(--edge)] bg-[var(--ink-deep)] mt-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <div className="h-6 w-6 rounded bg-[var(--gold)] flex items-center justify-center">
+              <BookOpen className="h-3 w-3 text-[var(--ink)]" />
+            </div>
+            <span className="text-sm font-black font-playfair bg-gradient-to-br from-[var(--gold-bright)] to-[var(--gold)] bg-clip-text text-transparent">KIF Academy</span>
+          </div>
+          <p className="font-mono text-[11px] tracking-wider text-[var(--frost-faint)]">© {new Date().getFullYear()} KIPM Innovators Foundation. All rights reserved.</p>
+          <Link href="/#courses" className="text-[10px] font-mono tracking-widest uppercase text-[var(--frost-faint)] hover:text-[var(--gold)] transition-colors hover-underline">
+            ← Back to Courses
+          </Link>
+        </div>
       </footer>
     </div>
   );
