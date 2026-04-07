@@ -117,3 +117,21 @@ html {
 .data-\[state\=closed\]\:zoom-out-95[data-state=closed] {
   animation: zoomOut 150ms ease;
 }
+
+/* ─── Utility: dot-grid hero background ─────────────────── */
+.hero-grid {
+  background-image: radial-gradient(circle, rgba(232,97,26,0.18) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* ─── Utility: glow-card hover ───────────────────────────── */
+.glow-card {
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+.glow-card:hover {
+  box-shadow:
+    0 0 0 1px rgba(232,97,26,0.28),
+    0 8px 40px -6px rgba(232,97,26,0.22),
+    0 24px 48px -12px rgba(0,0,0,0.7);
+  transform: translateY(-4px);
+}
