@@ -1,0 +1,1512 @@
+<!doctype html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KIF — KIPM Innovators Foundation</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink: #07090F;
+      --ink-deep: #020407;
+      --surface: #0D1117;
+      --surface-raised: #141923;
+      --edge: rgba(255,255,255,0.06);
+      --edge-bright: rgba(255,255,255,0.12);
+      --gold: #E8611A;
+      --gold-bright: #FF8C47;
+      --gold-dim: rgba(232,97,26,0.15);
+      --blue: #4B8EF0;
+      --blue-dim: rgba(75,142,240,0.12);
+      --frost: #EEF2FF;
+      --frost-dim: rgba(238,242,255,0.80);
+      --frost-faint: rgba(238,242,255,0.60);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; }
+    body {
+      background-color: var(--ink);
+      color: var(--frost);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    /* ─── CURSOR ─────────────────────────────────────── */
+    .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, opacity .2s;
+      mix-blend-mode: screen;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(232,97,26,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: transform .12s ease, width .3s, height .3s;
+    }
+    body:hover .cursor { opacity: 1; }
+
+    /* ─── NOISE TEXTURE ─────────────────────────────── */
+    .noise::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.35;
+      z-index: 1;
+    }
+
+    /* ─── GRID LINES ────────────────────────────────── */
+    .grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* ─── AURORA ────────────────────────────────────── */
+    @keyframes aurora1 {
+      0%,100% { transform: translate(0,0) scale(1) rotate(0deg); }
+      33% { transform: translate(60px,-40px) scale(1.15) rotate(5deg); }
+      66% { transform: translate(-30px,50px) scale(0.9) rotate(-3deg); }
+    }
+    @keyframes aurora2 {
+      0%,100% { transform: translate(0,0) scale(1) rotate(0deg); }
+      40% { transform: translate(-50px,30px) scale(1.2) rotate(-6deg); }
+      80% { transform: translate(40px,-60px) scale(0.85) rotate(4deg); }
+    }
+    @keyframes aurora3 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(30px,40px) scale(1.1); }
+    }
+
+    .aurora { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0; }
+    .aurora.a1 { width:600px;height:600px; background:radial-gradient(circle,#1a3a6e,transparent 70%); top:-10%;left:-8%; animation: aurora1 18s ease-in-out infinite; opacity:0.5; }
+    .aurora.a2 { width:500px;height:500px; background:radial-gradient(circle,#3d1500,transparent 70%); top:35%;right:-8%; animation: aurora2 22s ease-in-out infinite; opacity:0.45; }
+    .aurora.a3 { width:400px;height:400px; background:radial-gradient(circle,#0f2244,transparent 70%); bottom:-10%;left:28%; animation: aurora3 16s ease-in-out infinite; opacity:0.4; }
+
+    /* ─── SMOKE CANVAS ──────────────────────────────── */
+    .smoke-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.65;
+      mix-blend-mode: screen;
+    }
+
+    /* ─── CONSTELLATION CANVAS ───────────────────────── */
+    .constellation-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* ─── LIQUID BLOBS ───────────────────────────────── */
+    .liquid-blobs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: blobMorph var(--dur, 20s) ease-in-out infinite alternate;
+      opacity: 0.18;
+    }
+    .blob-1 { width: 520px; height: 420px; background: radial-gradient(ellipse, #E8611A, #FF8C47 40%, transparent 70%); top: 10%; left: -8%; --dur: 17s; }
+    .blob-2 { width: 440px; height: 540px; background: radial-gradient(ellipse, #4B8EF0, #1a3a8e 40%, transparent 70%); top: 40%; right: -10%; --dur: 23s; animation-direction: alternate-reverse; }
+    .blob-3 { width: 380px; height: 380px; background: radial-gradient(ellipse, #9B59B6, #4B8EF0 50%, transparent 70%); bottom: 0%; left: 30%; --dur: 19s; }
+    .blob-4 { width: 280px; height: 320px; background: radial-gradient(ellipse, #FF8C47, #E8611A 40%, transparent 70%); top: 15%; right: 20%; --dur: 14s; animation-direction: alternate-reverse; opacity: 0.12; }
+
+    @keyframes blobMorph {
+      0%   { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; }
+      25%  { transform: translate(30px, -20px) scale(1.08) rotate(5deg); border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%; }
+      50%  { transform: translate(-20px, 35px) scale(0.95) rotate(-3deg); border-radius: 70% 30% 50% 50% / 40% 70% 30% 60%; }
+      75%  { transform: translate(15px, 10px) scale(1.05) rotate(8deg); border-radius: 30% 70% 60% 40% / 70% 40% 60% 30%; }
+      100% { transform: translate(-35px, -15px) scale(1.1) rotate(-6deg); border-radius: 50% 50% 40% 60% / 30% 60% 40% 70%; }
+    }
+
+    /* ─── HERO GLOW RING ─────────────────────────────── */
+    .hero-glow-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 4;
+    }
+    .ring-svg {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: ringRotate var(--rspeed, 18s) linear infinite;
+    }
+    .ring-svg.reverse { animation-direction: reverse; }
+    @keyframes ringRotate {
+      from { transform: translate(-50%,-50%) rotate(0deg); }
+      to   { transform: translate(-50%,-50%) rotate(360deg); }
+    }
+
+    /* ─── FLOATING BADGES ────────────────────────────── */
+    .hero-badges {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9;
+    }
+    .float-badge {
+      position: absolute;
+      display: flex; align-items: center; gap: .5rem;
+      background: rgba(13,17,23,0.75);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-left: 2px solid var(--gold);
+      backdrop-filter: blur(12px);
+      padding: .55rem 1rem;
+      border-radius: 4px;
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--frost-dim);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      animation: badgeFloat var(--bf-dur, 6s) ease-in-out infinite;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    .float-badge .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; box-shadow: 0 0 8px var(--gold); }
+    .float-badge.b1 { top: 22%; left: 5%;  --bf-dur: 7s;  animation-delay: 1.2s; }
+    .float-badge.b2 { top: 65%; left: 3%;  --bf-dur: 8.5s; animation-delay: 1.8s; }
+    .float-badge.b3 { top: 25%; right: 5%; --bf-dur: 6.5s; animation-delay: 1.5s; }
+    .float-badge.b4 { top: 68%; right: 4%; --bf-dur: 9s;   animation-delay: 2.1s; }
+    @keyframes badgeFloat {
+      0%   { opacity: 0; transform: translateY(12px); }
+      15%  { opacity: 1; }
+      50%  { transform: translateY(-6px); opacity: 1; }
+      100% { transform: translateY(6px); opacity: 1; }
+    }
+    @media (max-width: 900px) { .hero-badges { display: none; } }
+
+    /* ─── SCROLL REVEAL ─────────────────────────────── */
+    .sr { opacity: 0; transform: translateY(48px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+    .sr.sr-left { transform: translateX(-48px); }
+    .sr.sr-right { transform: translateX(48px); }
+    .sr.sr-scale { transform: scale(.94); }
+    .sr.on { opacity: 1; transform: none !important; }
+
+    /* ─── NAV ───────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; width: 100%;
+      z-index: 100;
+      transition: all .5s cubic-bezier(.16,1,.3,1);
+    }
+    nav.scrolled {
+      top: .85rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 3rem);
+      max-width: 1220px;
+      background: rgba(13,17,23,0.55);
+      backdrop-filter: blur(32px) saturate(2) brightness(1.1);
+      -webkit-backdrop-filter: blur(32px) saturate(2) brightness(1.1);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(255,255,255,0.18);
+      border-radius: 6px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.06) inset, 0 0 0 1px rgba(232,97,26,0.1);
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto;
+      padding: 1.25rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 900;
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: .04em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+    .nav-link {
+      font-size: .78rem; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--frost-dim); text-decoration: none;
+      position: relative; transition: color .3s;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width .4s cubic-bezier(.16,1,.3,1);
+    }
+    .nav-link:hover { color: var(--frost); }
+    .nav-link:hover::after { width: 100%; }
+    .nav-cta {
+      font-size: .75rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--ink); background: var(--gold);
+      border: none; padding: .65rem 1.4rem;
+      border-radius: 2px; cursor: pointer; text-decoration: none;
+      transition: all .3s cubic-bezier(.16,1,.3,1);
+    }
+    .nav-cta:hover { background: var(--gold-bright); transform: translateY(-1px); box-shadow: 0 8px 30px rgba(232,97,26,.3); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--frost-dim); transition: all .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .mobile-menu {
+      max-height: 0; overflow: hidden;
+      background: rgba(7,9,15,.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--edge);
+      transition: max-height .4s cubic-bezier(.16,1,.3,1);
+    }
+    .mobile-menu.open { max-height: 400px; }
+    .mobile-menu-inner { padding: 1.5rem 2rem 2rem; display: flex; flex-direction: column; gap: 1.25rem; }
+    .mobile-menu a { color: var(--frost-dim); text-decoration: none; font-size: .9rem; font-weight: 500; letter-spacing: .08em; transition: color .3s; }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* ─── HERO ──────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg { position: absolute; inset: 0; background: var(--ink-deep); }
+
+    .hero-content {
+      position: relative; z-index: 10;
+      max-width: 900px; margin: 0 auto;
+      padding: 10rem 2rem 8rem;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: .75rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem; letter-spacing: .28em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 2.5rem;
+      opacity: 0; animation: eyebrowIn .8s cubic-bezier(.16,1,.3,1) .2s forwards;
+    }
+    .hero-eyebrow-line { width: 40px; height: 1px; background: var(--gold); }
+
+    @keyframes eyebrowIn {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 900; line-height: .95;
+      letter-spacing: -.02em;
+      color: var(--frost);
+      margin-bottom: 2rem;
+      opacity: 0; animation: heroTitleIn 1.1s cubic-bezier(.16,1,.3,1) .35s forwards;
+    }
+    .hero-h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 60%, #B84A10 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    @keyframes heroTitleIn {
+      from { opacity: 0; transform: translateY(50px) skewY(1deg); }
+      to { opacity: 1; transform: translateY(0) skewY(0deg); }
+    }
+
+    .hero-sub {
+      font-size: 1.25rem; font-weight: 300; line-height: 1.7;
+      color: var(--frost-faint); max-width: 500px; margin: 0 auto 3rem;
+      opacity: 0; animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .55s forwards;
+    }
+    .hero-btns {
+      display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .7s forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-gold {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: var(--gold);
+      color: var(--ink); font-weight: 600; font-size: .82rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 1rem 2rem; border-radius: 2px; text-decoration: none;
+      border: none; cursor: pointer;
+      transition: all .35s cubic-bezier(.16,1,.3,1);
+      position: relative; overflow: hidden;
+    }
+    .btn-gold::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+      transform: translateX(-100%);
+      transition: transform .5s;
+    }
+    .btn-gold:hover::before { transform: translateX(100%); }
+    .btn-gold:hover { background: var(--gold-bright); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(232,97,26,.35); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: transparent;
+      color: var(--frost-dim); font-weight: 500; font-size: .82rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 1rem 2rem; border-radius: 2px; text-decoration: none;
+      border: 1px solid var(--edge-bright); cursor: pointer;
+      transition: all .35s cubic-bezier(.16,1,.3,1);
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      opacity: 0; animation: fadeUp .9s cubic-bezier(.16,1,.3,1) 1.2s forwards;
+    }
+    .scroll-hint span { font-family: 'DM Mono', monospace; font-size: .6rem; letter-spacing: .25em; text-transform: uppercase; color: rgba(255,255,255,.2); }
+    .scroll-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100% { opacity: .3; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.15); } }
+
+    /* ─── SECTION HEADER ────────────────────────────── */
+    .section-kicker {
+      display: inline-flex; align-items: center; gap: .75rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.25rem;
+    }
+    .section-kicker::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+
+    /* ─── ABOUT ─────────────────────────────────────── */
+    .about-section { padding: 10rem 2rem; max-width: 1280px; margin: 0 auto; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .about-h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 900; line-height: 1;
+      letter-spacing: -.02em; color: var(--frost);
+    }
+    .about-h2 em { font-style: italic; color: var(--gold); }
+    .divider { width: 48px; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin: 2rem 0; }
+    .about-body { font-size: 1.05rem; line-height: 1.85; color: var(--frost-faint); }
+    .about-box {
+      background: var(--surface);
+      border: 1px solid var(--edge);
+      border-top: 2px solid var(--gold);
+      padding: 2rem;
+      margin-top: 2.5rem;
+    }
+    .about-box-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--frost); margin-bottom: .75rem; }
+    .about-box-body { font-size: 1rem; line-height: 1.75; color: var(--frost-faint); }
+
+    /* ─── STATS ─────────────────────────────────────── */
+    .stats-section { padding: 6rem 2rem; position: relative; overflow: hidden; }
+    .stats-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(232,97,26,.03) 0%, transparent 50%, rgba(75,142,240,.03) 100%);
+      border-top: 1px solid var(--edge); border-bottom: 1px solid var(--edge);
+    }
+    .stats-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--edge); }
+    .stat-cell {
+      background: var(--ink);
+      padding: 3rem 2rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      transition: background .3s;
+    }
+    .stat-cell:hover { background: var(--surface); }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 900; line-height: 1;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--frost-faint); margin-top: .75rem; }
+
+    /* ─── OFFERS ────────────────────────────────────── */
+    .offers-section { padding: 10rem 2rem; position: relative; overflow: hidden; }
+    .offers-header { max-width: 1280px; margin: 0 auto 5rem; }
+    .offers-h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -.02em; color: var(--frost);
+      max-width: 600px;
+    }
+    .offers-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--edge); }
+    .offer-card {
+      background: var(--ink);
+      padding: 2.75rem 2.5rem;
+      position: relative; overflow: hidden;
+      transition: background .4s, transform .4s cubic-bezier(.16,1,.3,1);
+      cursor: default;
+    }
+    .offer-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: var(--gold);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s cubic-bezier(.16,1,.3,1);
+    }
+    .offer-card:hover { background: var(--surface-raised); transform: translateY(-4px); }
+    .offer-card:hover::before { transform: scaleX(1); }
+    .offer-num {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .2em;
+      color: rgba(232,97,26,.4); margin-bottom: 1.5rem;
+    }
+    .offer-icon {
+      width: 48px; height: 48px;
+      border: 1px solid var(--edge-bright);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.5rem;
+      transition: border-color .3s, background .3s;
+    }
+    .offer-card:hover .offer-icon { border-color: var(--gold); background: var(--gold-dim); }
+    .offer-icon svg { width: 20px; height: 20px; color: var(--gold); }
+    .offer-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--frost); margin-bottom: .85rem; line-height: 1.2; }
+    .offer-desc { font-size: 1rem; line-height: 1.75; color: var(--frost-faint); }
+
+    /* ─── PORTFOLIO ─────────────────────────────────── */
+    .portfolio-section { padding: 10rem 2rem; position: relative; }
+    .portfolio-header { max-width: 1280px; margin: 0 auto 5rem; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 2rem; }
+    .portfolio-h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -.02em; color: var(--frost);
+    }
+    .portfolio-count {
+      font-family: 'DM Mono', monospace; font-size: .7rem;
+      letter-spacing: .2em; color: var(--frost-faint);
+    }
+    .portfolio-list {
+      max-width: 1280px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .portfolio-card {
+      background: var(--surface);
+      border: 1px solid var(--edge);
+      border-top: 2px solid transparent;
+      padding: 2rem 1.75rem 1.75rem;
+      position: relative; overflow: hidden;
+      cursor: default;
+      transition: border-color .35s, background .35s, transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .portfolio-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(232,97,26,.06) 0%, transparent 60%);
+      opacity: 0; transition: opacity .35s;
+    }
+    .portfolio-card:hover { border-color: var(--gold); background: var(--surface-raised); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(232,97,26,.12); }
+    .portfolio-card:hover::before { opacity: 1; }
+    .portfolio-card:hover .p-sector { background: var(--gold-dim); border-color: rgba(232,97,26,.3); color: var(--gold); }
+    .p-idx {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem; letter-spacing: .18em;
+      color: rgba(232,97,26,.6);
+    }
+    .p-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--frost); line-height: 1.3; }
+    .p-sector {
+      display: inline-block;
+      font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--frost-faint); background: var(--ink);
+      border: 1px solid var(--edge); padding: .3rem .75rem;
+      transition: background .3s, border-color .3s, color .3s;
+      align-self: flex-start;
+    }
+
+    /* ─── CTA ───────────────────────────────────────── */
+    .cta-section { padding: 12rem 2rem; position: relative; overflow: hidden; }
+    .cta-bg {
+      position: absolute; inset: 0;
+      background: var(--surface);
+    }
+    .cta-glow {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(232,97,26,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-inner { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; text-align: center; }
+    .cta-h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900; line-height: .95;
+      letter-spacing: -.02em; color: var(--frost); margin-bottom: 1.5rem;
+    }
+    .cta-h2 em { font-style: italic; color: var(--gold); }
+    .cta-sub { font-size: 1.15rem; line-height: 1.75; color: var(--frost-faint); margin-bottom: 3rem; }
+    .cta-btns { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+    /* ─── FOOTER ────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--edge);
+      padding: 2.5rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 900;
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+    .footer-copy { font-size: .72rem; letter-spacing: .08em; color: rgba(255,255,255,.2); }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3); text-decoration: none; transition: color .3s; }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ─── PARTICLES ─────────────────────────────────── */
+    .particle-canvas { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+
+    /* ─── RESPONSIVE ────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .offers-grid { grid-template-columns: 1fr 1fr; }
+      .portfolio-list { grid-template-columns: 1fr 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none !important; }
+      .hamburger { display: flex !important; }
+      .offers-grid { grid-template-columns: 1fr; }
+      .portfolio-list { grid-template-columns: 1fr; }
+      .portfolio-header { flex-direction: column; align-items: flex-start; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .hero-btns { flex-direction: column; align-items: stretch; }
+      .hero-btns a { text-align: center; justify-content: center; }
+    }
+
+    /* ─── HOVER LINK UNDERLINE ──────────────────────── */
+    .inline-link { color: var(--gold); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .3s; }
+    .inline-link:hover { border-color: var(--gold); }
+
+    /* ─── FAQ ───────────────────────────────────────── */
+    .faq-section { padding: 10rem 2rem; position: relative; }
+    .faq-inner { max-width: 780px; margin: 0 auto; }
+    .faq-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -.02em; color: var(--frost);
+      text-align: center; margin-bottom: 3.5rem;
+    }
+    .faq-heading em { font-style: italic; color: var(--gold); }
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--edge);
+      border-radius: 4px;
+      margin-bottom: .75rem;
+      overflow: hidden;
+      transition: border-color .3s;
+    }
+    .faq-item.open { border-color: rgba(232,97,26,.4); }
+    .faq-question {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      background: none; border: none; cursor: pointer;
+      text-align: left;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 500;
+      color: var(--frost-dim);
+      transition: color .3s;
+    }
+    .faq-item.open .faq-question { color: var(--gold); }
+    .faq-chevron {
+      flex-shrink: 0; width: 18px; height: 18px;
+      color: var(--frost-faint);
+      transition: transform .4s cubic-bezier(.16,1,.3,1), color .3s;
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--gold); }
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height .45s cubic-bezier(.16,1,.3,1), padding .3s;
+      padding: 0 1.75rem;
+    }
+    .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 1.5rem; }
+    .faq-answer p { font-size: 1rem; line-height: 1.8; color: var(--frost-faint); }
+
+    /* ─── TESTIMONIALS ──────────────────────────────── */
+    .testimonials-section { padding: 2rem 2rem 10rem; position: relative; }
+    .testimonials-section::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(232,97,26,.03) 50%, transparent 100%);
+      pointer-events: none;
+    }
+    .testimonials-inner { max-width: 1100px; margin: 0 auto; }
+    .testimonials-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -.02em; color: var(--frost);
+      text-align: center; margin-bottom: 3.5rem;
+    }
+    .testimonials-heading em { font-style: italic; color: var(--gold); }
+    .testimonials-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .testimonial-card {
+      background: var(--surface);
+      border: 1px solid var(--edge);
+      border-radius: 4px;
+      padding: 2.25rem 2rem 2rem;
+      display: flex; flex-direction: column; gap: 1.75rem;
+      transition: border-color .35s, transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s;
+      position: relative; overflow: hidden;
+    }
+    .testimonial-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      opacity: 0; transition: opacity .35s;
+    }
+    .testimonial-card:hover { border-color: rgba(232,97,26,.35); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(232,97,26,.1); }
+    .testimonial-card:hover::before { opacity: 1; }
+    .testimonial-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-style: italic;
+      line-height: 1.8; color: var(--frost-dim);
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+    .t-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .8rem; font-weight: 700;
+      color: var(--ink); flex-shrink: 0; letter-spacing: .04em;
+    }
+    .t-info { display: flex; flex-direction: column; gap: .2rem; }
+    .t-name { font-size: .95rem; font-weight: 600; color: var(--frost); }
+    .t-role { font-size: .78rem; color: var(--frost-faint); }
+    .t-meta {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .7rem; letter-spacing: .06em; color: var(--frost-faint);
+      background: var(--ink); border: 1px solid var(--edge);
+      padding: .2rem .65rem; border-radius: 20px;
+      margin-top: .3rem; width: fit-content;
+    }
+    .t-meta::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+    @media (max-width: 768px) { .testimonials-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+
+<body>
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo">KIF</a>
+      <div class="nav-links">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#programs" class="nav-link">Programs</a>
+        <a href="#portfolio" class="nav-link">Portfolio</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+      <a href="#contact" class="nav-cta">Apply Now</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-inner">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#programs">Programs</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+        <a href="#contact" style="color:var(--gold);font-weight:600;">Apply for Incubation →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="home" class="hero noise">
+    <div class="hero-bg">
+      <div class="aurora a1"></div>
+      <div class="aurora a2"></div>
+      <div class="aurora a3"></div>
+      <div class="grid-lines"></div>
+    </div>
+
+    <!-- Liquid blobs -->
+    <div class="liquid-blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+      <div class="blob blob-4"></div>
+    </div>
+
+    <canvas class="smoke-canvas" id="smoke-canvas"></canvas>
+
+    <!-- Constellation network -->
+    <canvas class="constellation-canvas" id="constellation-canvas"></canvas>
+
+    <!-- Orbital glow rings -->
+    <div class="hero-glow-ring" id="hero-glow-ring">
+      <svg class="ring-svg" style="--rspeed:28s;" width="900" height="900" viewBox="0 0 900 900">
+        <defs>
+          <linearGradient id="rg1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#E8611A" stop-opacity="0"/>
+            <stop offset="40%" stop-color="#E8611A" stop-opacity="0.7"/>
+            <stop offset="60%" stop-color="#FF8C47" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#E8611A" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="450" cy="450" rx="420" ry="120" fill="none" stroke="url(#rg1)" stroke-width="1.2" stroke-dasharray="18 10"/>
+      </svg>
+      <svg class="ring-svg reverse" style="--rspeed:20s;" width="700" height="700" viewBox="0 0 700 700">
+        <defs>
+          <linearGradient id="rg2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#4B8EF0" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#4B8EF0" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#4B8EF0" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="350" cy="350" rx="320" ry="85" fill="none" stroke="url(#rg2)" stroke-width="0.8" stroke-dasharray="6 14"/>
+      </svg>
+      <svg class="ring-svg" style="--rspeed:38s;" width="1100" height="1100" viewBox="0 0 1100 1100">
+        <defs>
+          <linearGradient id="rg3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#9B59B6" stop-opacity="0"/>
+            <stop offset="35%" stop-color="#9B59B6" stop-opacity="0.35"/>
+            <stop offset="65%" stop-color="#E8611A" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#9B59B6" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="550" cy="550" rx="520" ry="160" fill="none" stroke="url(#rg3)" stroke-width="0.6"/>
+      </svg>
+    </div>
+
+    <!-- Floating info badges -->
+    <div class="hero-badges">
+      <div class="float-badge b1"><span class="badge-dot"></span>DPIIT Recognised</div>
+      <div class="float-badge b2"><span class="badge-dot"></span>50+ Startups</div>
+      <div class="float-badge b3"><span class="badge-dot"></span>₹2Cr+ Funded</div>
+      <div class="float-badge b4"><span class="badge-dot"></span>Est. Gorakhpur</div>
+    </div>
+
+    <canvas class="particle-canvas" id="particle-canvas"></canvas>
+
+    <div class="hero-content" style="z-index:10;">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-line"></span>
+        DPIIT-Recognised Startup Incubator
+        <span class="hero-eyebrow-line"></span>
+      </div>
+      <h1 class="hero-h1">
+        <em>Innovate.</em><br>Incubate.<br>Grow.
+      </h1>
+      <p class="hero-sub">Empowering entrepreneurs from Gorakhpur to the world — where bold ideas become scalable realities.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-gold">
+          <i data-lucide="rocket" style="width:15px;height:15px;"></i>
+          Apply for Incubation
+        </a>
+        <a href="#portfolio" class="btn-ghost">
+          <i data-lucide="briefcase" style="width:15px;height:15px;"></i>
+          View Portfolio
+        </a>
+      </div>
+    </div>
+
+    <div class="scroll-hint" style="z-index:10;">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-section">
+      <div class="about-grid">
+        <div class="sr sr-left">
+          <div class="section-kicker">About</div>
+          <h2 class="about-h2">Who<br>We <em>Are</em></h2>
+          <div class="divider"></div>
+          <div class="about-box">
+            <div class="about-box-title">Our Mission</div>
+            <div class="about-box-body">Transforming bold ideas into scalable businesses through mentorship, infrastructure, and ecosystem access.</div>
+          </div>
+        </div>
+        <div class="sr sr-right" style="transition-delay:.15s">
+          <p class="about-body" style="margin-bottom:1.5rem;">
+            KIPM Innovators Foundation (KIF) is a DPIIT-recognised startup incubator housed at KIPM College of Engineering &amp; Technology, Gorakhpur, Uttar Pradesh. Incorporated in September 2022 under the Companies Act, KIF operates as a non-government, not-for-profit entity focused on Community, Personal &amp; Social Services.
+          </p>
+          <p class="about-body">
+            We empower early-stage founders across AgTech, AI &amp; Machine Learning, Manufacturing Technologies, Creative Industries, and Environmental Technologies — with the infrastructure, expertise, and community that startups need to thrive.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-section" id="stats-section">
+    <div class="stats-bg"></div>
+    <div class="stats-grid" id="stats-grid"></div>
+  </section>
+
+  <!-- OFFERS -->
+  <section id="programs" class="offers-section">
+    <div class="offers-header sr">
+      <div class="section-kicker">Services</div>
+      <h2 class="offers-h2">Everything you need to<br><em style="font-style:italic;color:var(--gold);">build &amp; scale.</em></h2>
+    </div>
+    <div class="offers-grid" id="offers-grid"></div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio" class="portfolio-section">
+    <div class="portfolio-header sr">
+      <div>
+        <div class="section-kicker">Startups</div>
+        <h2 class="portfolio-h2">Startups <em style="font-style:italic;color:var(--gold);">Incubated</em></h2>
+      </div>
+      <span class="portfolio-count" id="portfolio-count">— Ventures</span>
+    </div>
+    <div class="portfolio-list" id="portfolio-list"></div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contact" class="cta-section">
+    <div class="cta-bg"></div>
+    <div class="cta-glow"></div>
+    <div class="cta-inner sr">
+      <div class="section-kicker" style="justify-content:center;">Apply</div>
+      <h2 class="cta-h2">Ready to build<br>with <em>KIF</em>?</h2>
+      <p class="cta-sub">Applications are open for our next cohort. Join a community of innovators at KIPM, Gorakhpur and take your startup to new heights.</p>
+      <div class="cta-btns">
+        <a href="https://wa.me/918601761881?text=Hi%20!%F0%9F%91%8B%0AI%20want%20to%20connect%20for%20a%20consultation%20for%20my%20Idea%2FStartup%20Incubation." target="_blank" class="btn-gold">
+          <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
+          WhatsApp Us
+        </a>
+        <a href="#contact" class="btn-ghost">
+          <i data-lucide="send" style="width:15px;height:15px;"></i>
+          Apply Now
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="faq-section">
+    <div class="faq-inner">
+      <h2 class="faq-heading sr">Frequently Asked <em>Questions</em></h2>
+      <div class="faq-list sr">
+
+        <div class="faq-item open">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            What is KIPM Innovators Foundation?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>KIF is a DPIIT-recognised startup incubator housed at KIPM College of Engineering &amp; Technology, Gorakhpur. We support early-stage founders with mentorship, infrastructure, funding access, and a strong community network.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            How do I apply to KIF?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>You can apply by clicking the "Apply Now" or "WhatsApp Us" button on this page. Our team will reach out to schedule an initial consultation and walk you through the application process.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            What types of startups does KIF support?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>KIF supports early-stage startups across AgTech, AI &amp; Machine Learning, Manufacturing Technologies, Creative Industries, FinTech, EdTech, and Environmental Technologies.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            How can I sponsor or partner with KIF?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>We welcome mentors, investors, and corporate sponsors. Reach out via WhatsApp or email to explore partnership opportunities — from mentorship sessions to co-investment arrangements.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Are KIF programs free?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>KIF is a not-for-profit incubator. Many of our core programs, mentorship sessions, and workshops are offered at minimal or no cost to selected startups. Contact us for details on the current cohort.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="testimonials-section">
+    <div class="testimonials-inner">
+      <h2 class="testimonials-heading sr">What Our <em>Members Say</em></h2>
+      <div class="testimonials-grid">
+
+        <div class="testimonial-card sr">
+          <p class="testimonial-quote">"The incubator is full of practitioners — people who've actually built companies and shipped products. The conversations are specific and useful."</p>
+          <div class="testimonial-author">
+            <div class="t-avatar">RC</div>
+            <div class="t-info">
+              <span class="t-name">Shivansh vikram</span>
+              <span class="t-role">Co-founder, Do While</span>
+              <span class="t-meta">Gorakhpur · Member since 2023</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card sr" style="transition-delay:.1s">
+          <p class="testimonial-quote">"I've scaled a startup before, so I know what good community looks like. KIF is thoughtfully run: great curation, genuine people, and programs that keep you coming back."</p>
+          <div class="testimonial-author">
+            <div class="t-avatar">PK</div>
+            <div class="t-info">
+              <span class="t-name">Vivek Kumar</span>
+              <span class="t-role">Co-founder, Do While</span>
+              <span class="t-meta">Gorakhpur · Member since 2024</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div style="display:flex;flex-direction:column;gap:.4rem;">
+        <a href="#home" class="footer-logo">KIF</a>
+        <span class="footer-copy">© 2024 KIPM Innovators Foundation. All rights reserved.</span>
+      </div>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ─── DATA ────────────────────────────────────────
+    const offers = [
+      { icon: 'sprout', title: 'Seed Funding Support', desc: 'Guidance on accessing government grants, SISFS funds, and curated investor networks to fuel your early growth.' },
+      { icon: 'graduation-cap', title: 'Expert Mentorship', desc: 'Connect with industry veterans, AKTU faculty, and domain specialists who have built successful ventures.' },
+      { icon: 'flask-conical', title: 'Workshops & Bootcamps', desc: 'Regular skill sessions, entrepreneurship masterclasses, and hands-on workshops with real practitioners.' },
+      { icon: 'bar-chart-3', title: 'Monitoring & Evaluation', desc: 'Track your startup\'s growth milestones with structured reviews and data-driven performance assessments.' },
+      { icon: 'globe', title: 'Ecosystem Visibility', desc: 'Get featured on StartinUP (UP Govt.), Startup India, and our growing network of strategic partners.' },
+      { icon: 'building', title: 'Incubation Infrastructure', desc: 'Access co-working space, advanced labs, legal support, and business registration assistance at KIPM campus.' },
+    ];
+
+    const stats = [
+      { value: 10, suffix: '+', label: 'Startups Incubated' },
+      { value: 20, suffix: '+', label: 'Expert Mentors' },
+      { value: 5, suffix: '+', label: 'Sectors Covered' },
+      { value: 1, suffix: '', label: 'Govt-Recognised Incubator' },
+    ];
+
+    const portfolio = [
+      { name: 'Aaramo Private Limited', sector: 'Agriculture & Rural Services' },
+      { name: 'Vexive India Private Limited', sector: 'Software / FinTech' },
+      { name: 'NAVA-NETRA Neural Sudarshan Labs', sector: 'AI & Machine Learning' },
+      { name: 'Chaidhaba Catering Private Limited', sector: 'Food & Beverages' },
+      { name: 'Mapvest Guardian Pvt Ltd', sector: 'Real Estate / PropTech' },
+      { name: 'DeepRoot AgriTech', sector: 'Agricultural Technology' },
+      { name: 'UrbanShift Mobility', sector: 'Transportation & Logistics' },
+      { name: 'GreenPulse Energy', sector: 'Environmental Technologies' },
+      { name: 'SkillBridge EdTech', sector: 'Education Technology' },
+    ];
+
+    // ─── RENDER: STATS ───────────────────────────────
+    const statsGrid = document.getElementById('stats-grid');
+    stats.forEach(s => {
+      const cell = document.createElement('div');
+      cell.className = 'stat-cell sr';
+      cell.innerHTML = `
+        <span class="stat-num counter" data-target="${s.value}" data-suffix="${s.suffix}">0${s.suffix}</span>
+        <span class="stat-label">${s.label}</span>`;
+      statsGrid.appendChild(cell);
+    });
+
+    // ─── RENDER: OFFERS ──────────────────────────────
+    const offersGrid = document.getElementById('offers-grid');
+    offers.forEach((o, i) => {
+      const card = document.createElement('div');
+      card.className = 'offer-card sr';
+      card.style.transitionDelay = `${i * 0.07}s`;
+      card.innerHTML = `
+        <div class="offer-num">${String(i+1).padStart(2,'0')}</div>
+        <div class="offer-icon"><i data-lucide="${o.icon}"></i></div>
+        <div class="offer-title">${o.title}</div>
+        <div class="offer-desc">${o.desc}</div>`;
+      offersGrid.appendChild(card);
+    });
+
+    // ─── RENDER: PORTFOLIO ───────────────────────────
+    const portfolioList = document.getElementById('portfolio-list');
+    document.getElementById('portfolio-count').textContent = `— ${portfolio.length} Ventures`;
+    portfolio.forEach((s, i) => {
+      const card = document.createElement('div');
+      card.className = 'portfolio-card sr';
+      card.style.transitionDelay = `${i * 0.07}s`;
+      card.innerHTML = `
+        <span class="p-idx">${String(i+1).padStart(2,'0')}</span>
+        <span class="p-name">${s.name}</span>
+        <span class="p-sector">${s.sector}</span>`;
+      portfolioList.appendChild(card);
+    });
+
+    // ─── LUCIDE ICONS ────────────────────────────────
+    lucide.createIcons();
+
+    // ─── GLOW RING POSITIONING ───────────────────────
+    function positionGlowRing() {
+      const heroContent = document.querySelector('.hero-content');
+      const heroSection = document.getElementById('home');
+      const ring = document.getElementById('hero-glow-ring');
+      if (!heroContent || !ring) return;
+      const hRect = heroSection.getBoundingClientRect();
+      const cRect = heroContent.getBoundingClientRect();
+      ring.style.top  = (cRect.top - hRect.top + cRect.height / 2) + 'px';
+      ring.style.left = (cRect.left - hRect.left + cRect.width / 2) + 'px';
+    }
+    positionGlowRing();
+    window.addEventListener('resize', positionGlowRing);
+
+    // ─── CUSTOM CURSOR ───────────────────────────────
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx = -100, my = -100, rx = -100, ry = -100;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animateCursor() {
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+    document.querySelectorAll('a,button,.offer-card,.portfolio-row').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.style.width='18px'; cursor.style.height='18px'; ring.style.width='60px'; ring.style.height='60px'; });
+      el.addEventListener('mouseleave', () => { cursor.style.width='10px'; cursor.style.height='10px'; ring.style.width='36px'; ring.style.height='36px'; });
+    });
+
+    // ─── SMOKE CANVAS ────────────────────────────────
+    (function() {
+      const smokeCanvas = document.getElementById('smoke-canvas');
+      const sc = smokeCanvas.getContext('2d');
+      const hero = document.getElementById('home');
+
+      function resizeSmoke() {
+        smokeCanvas.width = hero.offsetWidth;
+        smokeCanvas.height = hero.offsetHeight;
+      }
+      resizeSmoke();
+      window.addEventListener('resize', resizeSmoke);
+
+      const SW = () => smokeCanvas.width;
+      const SH = () => smokeCanvas.height;
+
+      // Smoke puff class
+      class SmokePuff {
+        constructor() { this.spawn(); }
+        spawn() {
+          // Bias spawn points to bottom 40% and across the full width
+          this.x = Math.random() * SW();
+          this.y = SH() * (0.55 + Math.random() * 0.55);
+          this.vx = (Math.random() - 0.5) * 0.4;
+          this.vy = -(Math.random() * 0.55 + 0.15);
+          this.radius = Math.random() * 160 + 80;
+          this.growRate = Math.random() * 0.55 + 0.25;
+          this.life = 0;
+          this.maxLife = Math.random() * 340 + 260;
+          // Colour palette: deep blue-grey, warm amber, cool slate
+          const palette = [
+            [20, 30, 55],    // deep navy
+            [45, 25, 15],    // warm ember
+            [15, 22, 40],    // slate blue
+            [35, 18, 10],    // burnt sienna
+            [10, 18, 35],    // midnight
+          ];
+          this.rgb = palette[Math.floor(Math.random() * palette.length)];
+          this.rotation = Math.random() * Math.PI * 2;
+          this.rotSpeed = (Math.random() - 0.5) * 0.003;
+          this.wobble = Math.random() * 0.8 + 0.4;
+          this.wobbleSpeed = Math.random() * 0.025 + 0.01;
+          this.wobbleOffset = Math.random() * Math.PI * 2;
+        }
+        update() {
+          this.life++;
+          this.x += this.vx + Math.sin(this.life * this.wobbleSpeed + this.wobbleOffset) * this.wobble * 0.4;
+          this.y += this.vy;
+          this.radius += this.growRate;
+          this.rotation += this.rotSpeed;
+          if (this.life >= this.maxLife || this.y + this.radius < 0) this.spawn();
+        }
+        draw() {
+          const t = this.life / this.maxLife;
+          // Fade in quickly, hold, then fade out
+          let alpha;
+          if (t < 0.12) {
+            alpha = (t / 0.12) * 0.32;
+          } else if (t < 0.75) {
+            alpha = 0.32;
+          } else {
+            alpha = (1 - (t - 0.75) / 0.25) * 0.32;
+          }
+          if (alpha <= 0) return;
+
+          sc.save();
+          sc.translate(this.x, this.y);
+          sc.rotate(this.rotation);
+
+          // Layered radial gradient for volumetric feel
+          const g = sc.createRadialGradient(0, 0, 0, 0, 0, this.radius);
+          const [r, g2, b] = this.rgb;
+          g.addColorStop(0,   `rgba(${r+30},${g2+30},${b+30},${alpha * 0.9})`);
+          g.addColorStop(0.35, `rgba(${r+15},${g2+15},${b+15},${alpha * 0.55})`);
+          g.addColorStop(0.65, `rgba(${r},${g2},${b},${alpha * 0.25})`);
+          g.addColorStop(1,   `rgba(${r},${g2},${b},0)`);
+
+          // Draw slightly oval shape for more natural smoke
+          sc.scale(1, 0.72 + Math.sin(this.life * 0.01) * 0.08);
+          sc.beginPath();
+          sc.arc(0, 0, this.radius, 0, Math.PI * 2);
+          sc.fillStyle = g;
+          sc.fill();
+          sc.restore();
+        }
+      }
+
+      const puffs = [];
+      for (let i = 0; i < 28; i++) {
+        const p = new SmokePuff();
+        // Stagger initial positions across the timeline
+        p.life = Math.floor(Math.random() * p.maxLife);
+        puffs.push(p);
+      }
+
+      function drawSmoke() {
+        sc.clearRect(0, 0, SW(), SH());
+        puffs.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(drawSmoke);
+      }
+      drawSmoke();
+    })();
+
+    // ─── CONSTELLATION NETWORK ───────────────────────
+    (function() {
+      const cv = document.getElementById('constellation-canvas');
+      const cx = cv.getContext('2d');
+      const hero = document.getElementById('home');
+      let W, H, mouse = { x: -9999, y: -9999 };
+
+      function resize() {
+        W = cv.width = hero.offsetWidth;
+        H = cv.height = hero.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      hero.addEventListener('mousemove', e => {
+        const r = hero.getBoundingClientRect();
+        mouse.x = e.clientX - r.left;
+        mouse.y = e.clientY - r.top;
+      });
+      hero.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+      const NODE_COUNT = 90;
+      const CONNECT_DIST = 150;
+      const MOUSE_REPEL = 120;
+
+      class Node {
+        constructor() { this.reset(true); }
+        reset(init) {
+          this.x  = Math.random() * (W || window.innerWidth);
+          this.y  = init ? Math.random() * (H || window.innerHeight) : (Math.random() > 0.5 ? -10 : (H + 10));
+          this.ox = this.x; this.oy = this.y;
+          this.vx = (Math.random() - 0.5) * 0.35;
+          this.vy = (Math.random() - 0.5) * 0.35;
+          this.r  = Math.random() * 1.8 + 0.6;
+          // 70% subtle frost, 20% gold, 10% blue
+          const rnd = Math.random();
+          this.color = rnd > 0.3 ? [238,242,255] : rnd > 0.1 ? [232,97,26] : [75,142,240];
+          this.baseAlpha = Math.random() * 0.4 + 0.2;
+          this.pulse = Math.random() * Math.PI * 2;
+          this.pulseSpeed = Math.random() * 0.012 + 0.005;
+        }
+        update() {
+          this.pulse += this.pulseSpeed;
+          // Gentle drift
+          this.x += this.vx;
+          this.y += this.vy;
+          // Mouse repulsion
+          const dx = this.x - mouse.x, dy = this.y - mouse.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < MOUSE_REPEL) {
+            const force = (MOUSE_REPEL - dist) / MOUSE_REPEL;
+            this.x += (dx / dist) * force * 2.2;
+            this.y += (dy / dist) * force * 2.2;
+          }
+          // Wrap
+          if (this.x < -20) this.x = W + 20;
+          else if (this.x > W + 20) this.x = -20;
+          if (this.y < -20) this.y = H + 20;
+          else if (this.y > H + 20) this.y = -20;
+        }
+        draw() {
+          const alpha = this.baseAlpha * (0.7 + 0.3 * Math.sin(this.pulse));
+          const [r,g,b] = this.color;
+          // Glow halo
+          const grd = cx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r * 4);
+          grd.addColorStop(0, `rgba(${r},${g},${b},${alpha * 0.8})`);
+          grd.addColorStop(1, `rgba(${r},${g},${b},0)`);
+          cx.beginPath();
+          cx.arc(this.x, this.y, this.r * 4, 0, Math.PI * 2);
+          cx.fillStyle = grd;
+          cx.fill();
+          // Core dot
+          cx.beginPath();
+          cx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+          cx.fillStyle = `rgba(${r},${g},${b},${Math.min(alpha * 1.8, 1)})`;
+          cx.fill();
+        }
+      }
+
+      const nodes = Array.from({ length: NODE_COUNT }, () => new Node());
+
+      function drawConnections() {
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const a = nodes[i], b = nodes[j];
+            const dx = a.x - b.x, dy = a.y - b.y;
+            const d = Math.sqrt(dx*dx + dy*dy);
+            if (d < CONNECT_DIST) {
+              const t = 1 - d / CONNECT_DIST;
+              // Check if either node is close to mouse for highlight
+              const aDist = Math.hypot(a.x - mouse.x, a.y - mouse.y);
+              const bDist = Math.hypot(b.x - mouse.x, b.y - mouse.y);
+              const highlight = (aDist < 180 || bDist < 180) ? 2.5 : 1;
+              const baseAlpha = t * t * 0.35 * highlight;
+              // Blend colours of the two nodes
+              const [r1,g1,b1] = a.color, [r2,g2,b2] = b.color;
+              const grad = cx.createLinearGradient(a.x, a.y, b.x, b.y);
+              grad.addColorStop(0, `rgba(${r1},${g1},${b1},${baseAlpha})`);
+              grad.addColorStop(1, `rgba(${r2},${g2},${b2},${baseAlpha})`);
+              cx.beginPath();
+              cx.moveTo(a.x, a.y);
+              cx.lineTo(b.x, b.y);
+              cx.strokeStyle = grad;
+              cx.lineWidth = t * 1.2 * highlight;
+              cx.stroke();
+            }
+          }
+        }
+      }
+
+      function loop() {
+        cx.clearRect(0, 0, W, H);
+        drawConnections();
+        nodes.forEach(n => { n.update(); n.draw(); });
+        requestAnimationFrame(loop);
+      }
+      loop();
+    })();
+
+    // ─── PARTICLE CANVAS ─────────────────────────────
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+
+    function resizeCanvas() {
+      const hero = document.getElementById('home');
+      W = canvas.width = hero.offsetWidth;
+      H = canvas.height = hero.offsetHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.vx = (Math.random() - .5) * .3;
+        this.vy = -Math.random() * .5 - .1;
+        this.r = Math.random() * 1.2 + .3;
+        this.life = Math.random();
+        this.maxLife = Math.random() * .5 + .5;
+        this.color = Math.random() > .5 ? '232,97,26' : '75,142,240';
+      }
+      update() {
+        this.x += this.vx; this.y += this.vy;
+        this.life += .002;
+        if (this.life > this.maxLife || this.y < 0) this.reset();
+      }
+      draw() {
+        const a = Math.sin(this.life / this.maxLife * Math.PI) * .5;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.color},${a})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 80; i++) particles.push(new Particle());
+    function drawParticles() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    // ─── NAVBAR ──────────────────────────────────────
+    const navbar = document.getElementById('navbar');
+    document.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    // ─── SCROLL REVEAL ───────────────────────────────
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('on'); revealObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.sr').forEach(el => revealObs.observe(el));
+
+    // ─── COUNTER ─────────────────────────────────────
+    const counterObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const target = parseInt(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const dur = 2200;
+        const startTime = performance.now();
+
+        // Phase 1: fast scramble through random numbers
+        // Phase 2: ease into final value with overshoot
+        function tick(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / dur, 1);
+
+          if (progress < 0.6) {
+            // Scramble phase — show random numbers rapidly
+            const scramble = Math.floor(Math.random() * (target * 2));
+            el.textContent = scramble + suffix;
+            el.style.opacity = 0.4 + progress * 0.8;
+            el.style.transform = `scale(${1 + (0.6 - progress) * 0.15}) translateY(${(0.6 - progress) * -8}px)`;
+          } else {
+            // Settle phase — ease into final value
+            const settleProgress = (progress - 0.6) / 0.4;
+            const eased = 1 - Math.pow(1 - settleProgress, 4);
+            const val = Math.round(eased * target);
+            el.textContent = val + suffix;
+            el.style.opacity = 1;
+            el.style.transform = `scale(${1 + (1 - settleProgress) * 0.08}) translateY(0)`;
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(tick);
+          } else {
+            el.textContent = target + suffix;
+            el.style.transform = 'scale(1) translateY(0)';
+            el.style.opacity = 1;
+            // Glow pop on landing
+            el.style.textShadow = '0 0 30px rgba(232,97,26,0.9), 0 0 60px rgba(232,97,26,0.5)';
+            setTimeout(() => { el.style.textShadow = ''; }, 600);
+          }
+        }
+
+        // Staggered start for visual drama
+        const delay = Array.from(document.querySelectorAll('.counter')).indexOf(el) * 120;
+        setTimeout(() => requestAnimationFrame(tick), delay);
+        counterObs.unobserve(el);
+      });
+    }, { threshold: .4 });
+    document.querySelectorAll('.counter').forEach(el => {
+      el.style.transition = 'text-shadow 0.6s ease, transform 0.15s ease';
+      counterObs.observe(el);
+    });
+
+    // ─── FAQ TOGGLE ──────────────────────────────────
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+import Link from "next/link";
+import { courses } from "@/lib/courses";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Clock,
+  BarChart2,
+  Star,
+  Users,
+  ChevronRight,
+  BookOpen,
+  Award,
+  Zap,
+} from "lucide-react";
+
+const badgeVariantMap: Record<
+  string,
+  "bestseller" | "popular" | "hot" | "trending" | "new"
+> = {
+  Bestseller: "bestseller",
+  Popular: "popular",
+  Hot: "hot",
+  Trending: "trending",
+  New: "new",
+};
+
+const levelColorMap: Record<string, string> = {
+  Beginner: "text-emerald-400",
+  Intermediate: "text-[var(--blue)]",
+  Advanced: "text-purple-400",
+};
+
+export default function HomePage() {
+  return (
+    <div className="min-h-screen bg-[var(--ink)]">
+      {/* Navbar */}
+      <nav className="sticky top-0 z-40 border-b border-[var(--edge)] bg-[var(--ink)]/80 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-[var(--gold)] flex items-center justify-center border border-[var(--edge-bright)]">
+              <BookOpen className="h-4 w-4 text-[var(--ink)]" />
+            </div>
+            <span className="text-2xl font-black font-playfair bg-gradient-to-br from-[var(--gold-bright)] to-[var(--gold)] bg-clip-text text-transparent tracking-wide">
+              KIF
+            </span>
+            <span className="font-sans font-bold text-[var(--frost)]">Academy</span>
+          </Link>
+          <div className="hidden md:flex items-center gap-6 text-sm text-[var(--frost-dim)] font-medium uppercase tracking-wider">
+            <Link href="#courses" className="hover:text-[var(--gold)] transition-colors">
+              Courses
+            </Link>
+            <Link href="#why-us" className="hover:text-[var(--gold)] transition-colors">
+              Why Us
+            </Link>
+            <Button size="sm" className="bg-[var(--gold)] text-[var(--ink)] hover:bg-[var(--gold-bright)] border-none rounded-sm font-semibold uppercase tracking-wider">
+              Sign In
+            </Button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-[var(--gold)]/20 blur-[100px]" />
+          <div className="absolute top-20 -left-40 w-80 h-80 rounded-full bg-[var(--blue)]/20 blur-[100px]" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 text-center">
+          <div className="inline-flex items-center gap-2 font-mono px-4 py-1.5 rounded-full border border-[var(--gold)]/30 bg-[var(--gold)]/10 text-[var(--gold)] text-xs font-semibold uppercase tracking-widest mb-8">
+            <Zap className="h-3.5 w-3.5" />
+            Industry-Aligned Tech Courses
+          </div>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-black font-playfair text-[var(--frost)] leading-[1.1] mb-6 tracking-tight">
+            Build Real Skills.
+            <br />
+            <span className="bg-gradient-to-r from-[var(--gold-bright)] to-[var(--gold)] bg-clip-text text-transparent italic pr-2">
+              Launch Your Career.
+            </span>
+          </h1>
+          <p className="text-lg text-[var(--frost-faint)] max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
+            Expert-led courses in the most in-demand technologies. Structured
+            curriculum, hands-on projects, and lifetime access.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="xl" className="font-semibold uppercase tracking-widest bg-[var(--gold)] hover:bg-[var(--gold-bright)] text-[var(--ink)] rounded-sm py-6" asChild>
+              <Link href="#courses">
+                Explore Courses <ChevronRight className="h-5 w-5 ml-2" />
+              </Link>
+            </Button>
+            <Button size="xl" variant="outline" className="font-semibold uppercase tracking-widest text-[var(--frost-dim)] border-[var(--edge-bright)] hover:border-[var(--gold)] hover:text-[var(--gold)] rounded-sm py-6 bg-transparent" asChild>
+              <Link href="#why-us">Learn More</Link>
+            </Button>
+          </div>
+
+          {/* Stats */}
+          <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-[1px] max-w-4xl mx-auto bg-[var(--edge)] border-y border-[var(--edge)]">
+            {[
+              { icon: Users, label: "Students Enrolled", value: "12,000+" },
+              { icon: BookOpen, label: "Expert Courses", value: "5+" },
+              { icon: Award, label: "Certificates Issued", value: "8,500+" },
+              { icon: Star, label: "Average Rating", value: "4.8/5" },
+            ].map(({ icon: Icon, label, value }) => (
+              <div
+                key={label}
+                className="p-8 bg-[var(--ink)] hover:bg-[var(--surface)] transition-colors text-center"
+              >
+                <Icon className="h-6 w-6 text-[var(--gold)] mx-auto mb-4" />
+                <p className="text-3xl font-black font-playfair text-[var(--gold)]">{value}</p>
+                <p className="text-[10px] font-mono tracking-widest text-[var(--frost-faint)] mt-2 uppercase">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Courses Grid */}
+      <section id="courses" className="py-24 px-4 sm:px-6 lg:px-8 relative bg-[var(--ink-deep)]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-black font-playfair text-[var(--frost)] mb-6">
+              Our <span className="text-[var(--gold)] italic">Courses</span>
+            </h2>
+            <p className="text-[var(--frost-faint)] max-w-xl mx-auto text-lg leading-relaxed">
+              Choose from our carefully crafted courses designed to take you
+              from beginner to job-ready professional.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses.map((course) => (
+              <Card
+                key={course.id}
+                className="group flex flex-col border-[var(--edge)] bg-[var(--surface)] hover:bg-[var(--surface-raised)] hover:border-[var(--gold)]/40 hover:-translate-y-1 transition-all duration-300 rounded-sm overflow-hidden"
+              >
+                <div className="h-1 w-0 bg-gradient-to-r from-[var(--gold)] to-[var(--gold-bright)] group-hover:w-full transition-all duration-500" />
+                <CardHeader className="pb-3 pt-6 px-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="text-4xl border border-[var(--edge)] p-3 bg-[var(--ink)] rounded-sm group-hover:border-[var(--gold)]/50 transition-colors">
+                      {course.icon}
+                    </div>
+                    <Badge className="font-mono text-[10px] uppercase tracking-widest bg-[var(--gold-dim)] text-[var(--gold)] border border-[var(--gold)]/30 rounded-none hover:bg-[var(--gold)] hover:text-[var(--ink)]">
+                      {course.badge}
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-xl font-playfair font-bold text-[var(--frost)] group-hover:text-[var(--gold)] transition-colors line-clamp-1">
+                    {course.title}
+                  </CardTitle>
+                  <CardDescription className="text-[var(--frost-faint)] line-clamp-2 mt-2 leading-relaxed">
+                    {course.shortDescription}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent className="flex-1 space-y-4 px-6">
+                  <div className="flex items-center gap-4 text-sm pt-2">
+                    <div className="flex items-center gap-1.5 text-[var(--frost-dim)] font-mono text-xs">
+                      <Clock className="h-3.5 w-3.5 text-[var(--gold)]" />
+                      {course.duration}
+                    </div>
+                    <div
+                      className={`flex items-center gap-1.5 font-mono text-xs ${
+                        levelColorMap[course.level] ?? "text-[var(--frost-dim)]"
+                      }`}
+                    >
+                      <BarChart2 className="h-3.5 w-3.5 opacity-70" />
+                      {course.level}
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {course.syllabus[0].topics.slice(0, 3).map((t) => (
+                      <span
+                        key={t}
+                        className="text-[10px] font-mono tracking-wider px-2 py-1 bg-[var(--ink)] border border-[var(--edge)] text-[var(--frost-dim)] uppercase"
+                      >
+                        {t.split(" ").slice(0, 2).join(" ")}
+                      </span>
+                    ))}
+                    <span className="text-[10px] font-mono tracking-wider px-2 py-1 bg-[var(--ink)] border border-[var(--edge)] text-[var(--frost-dim)] uppercase">
+                      +more
+                    </span>
+                  </div>
+                </CardContent>
+
+                <CardFooter className="flex items-center justify-between pt-4 pb-6 px-6 border-t border-[var(--edge)] bg-[var(--ink)]/50 mt-4">
+                  <div>
+                    <p className="text-2xl font-bold font-playfair text-[var(--frost)] group-hover:text-[var(--gold)] transition-colors">
+                      ₹{course.price.toLocaleString("en-IN")}
+                    </p>
+                    <p className="text-[10px] font-mono text-[var(--frost-faint)] uppercase tracking-widest mt-1">one-time</p>
+                  </div>
+                  <Button asChild size="sm" className="bg-[var(--gold)] text-[var(--ink)] hover:bg-[var(--gold-bright)] rounded-sm font-semibold uppercase tracking-wider text-xs">
+                    <Link href={`/courses/${course.id}`}>
+                      Details <ChevronRight className="h-3.5 w-3.5 ml-1" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section id="why-us" className="py-24 px-4 sm:px-6 lg:px-8 border-y border-[var(--edge)] relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--gold)]/5 to-transparent pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-black font-playfair text-[var(--frost)] mb-6">
+              Why Choose <span className="text-[var(--gold)] italic">KIF Academy?</span>
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--edge)]">
+            {[
+              {
+                icon: "🎯",
+                title: "Industry-Relevant",
+                desc: "Our courses are designed in collaboration with industry experts and updated regularly to reflect current market demands.",
+              },
+              {
+                icon: "🛠️",
+                title: "Hands-On Projects",
+                desc: "Build real-world projects that go directly into your portfolio and demonstrate your skills to potential employers.",
+              },
+              {
+                icon: "🏆",
+                title: "Verifiable Certificate",
+                desc: "Earn a verifiable certificate upon completing the course that you can share on LinkedIn and your resume.",
+              },
+              {
+                icon: "💬",
+                title: "Doubt Resolution",
+                desc: "Get your questions answered through our dedicated support channels and community forums.",
+              },
+              {
+                icon: "♾️",
+                title: "Lifetime Access",
+                desc: "Once you purchase a course, you have lifetime access to all materials including future updates at no extra cost.",
+              },
+              {
+                icon: "🚀",
+                title: "Career Support",
+                desc: "Resume building workshops, mock interviews, and job referrals to help you land your dream tech job.",
+              },
+            ].map(({ icon, title, desc }) => (
+              <div
+                key={title}
+                className="p-10 bg-[var(--ink)] hover:bg-[var(--surface)] transition-all duration-300 group"
+              >
+                <div className="text-3xl mb-5 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all origin-left">{icon}</div>
+                <h3 className="text-[var(--frost)] font-bold font-playfair text-xl mb-3 group-hover:text-[var(--gold)] transition-colors">{title}</h3>
+                <p className="text-[var(--frost-faint)] text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 px-4 bg-[var(--ink-deep)] text-center text-[var(--frost-faint)] text-sm border-t border-[var(--edge)]">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <span className="text-xl font-black font-playfair bg-gradient-to-br from-[var(--gold-bright)] to-[var(--gold)] bg-clip-text text-transparent">
+              KIF
+            </span>
+            <span className="font-sans font-bold text-[var(--frost-dim)]">Academy</span>
+          </div>
+          <p className="font-mono text-xs tracking-wider">© {new Date().getFullYear()} KIPM Innovators Foundation. All rights reserved.</p>
+          <div className="flex gap-6 font-mono text-xs uppercase tracking-wider">
+            <Link href="#" className="hover:text-[var(--gold)] transition-colors">Privacy</Link>
+            <Link href="#" className="hover:text-[var(--gold)] transition-colors">Terms</Link>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
