@@ -51,7 +51,7 @@ export default function CourseDetailClient({ course }: Props) {
           <div className="border-t border-[var(--edge)]" />
 
           {/* Course Meta */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h4 className="text-[var(--frost)] font-bold font-playfair text-base tracking-wide">
               This course includes:
             </h4>
@@ -62,8 +62,8 @@ export default function CourseDetailClient({ course }: Props) {
               { emoji: "💬", text: "Community & doubt support" },
               { emoji: "📱", text: "Access on mobile, tablet & desktop" },
             ].map(({ emoji, text }) => (
-              <div key={text} className="flex items-start gap-3 text-sm text-[var(--frost-dim)]">
-                <span className="text-base leading-none mt-0.5 opacity-80">{emoji}</span>
+              <div key={text} className="flex items-start gap-3 text-sm text-[var(--frost-dim)] group/item hover:text-[var(--frost)] transition-colors">
+                <span className="text-base leading-none mt-0.5 opacity-80 group-hover/item:opacity-100 group-hover/item:scale-110 transition-all">{emoji}</span>
                 <span className="leading-relaxed">{text}</span>
               </div>
             ))}
