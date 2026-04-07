@@ -118,10 +118,13 @@ export default function HomePage() {
 
       {/* Courses Grid */}
       <section id="courses" className="py-24 px-4 sm:px-6 lg:px-8 relative bg-[var(--ink-deep)]">
+        {/* subtle radial glow center */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(232,97,26,0.07),transparent)] pointer-events-none" />
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
+            <p className="text-[10px] font-mono tracking-widest text-[var(--gold)] uppercase mb-3">Our Curriculum</p>
             <h2 className="text-4xl sm:text-5xl font-black font-playfair text-[var(--frost)] mb-6">
-              Our <span className="text-[var(--gold)] italic">Courses</span>
+              Explore <span className="text-[var(--gold)] italic">Courses</span>
             </h2>
             <p className="text-[var(--frost-faint)] max-w-xl mx-auto text-lg leading-relaxed">
               Choose from our carefully crafted courses designed to take you
