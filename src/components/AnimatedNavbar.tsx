@@ -29,3 +29,15 @@ export default function AnimatedNavbar() {
           scrolled ? "w-full opacity-100" : "w-0 opacity-0"
         }`}
       />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="h-8 w-8 rounded-lg bg-[var(--gold)] flex items-center justify-center border border-[var(--edge-bright)] group-hover:animate-gold-pulse transition-all">
+            <BookOpen className="h-4 w-4 text-[var(--ink)]" />
+          </div>
+          <span className="text-2xl font-black font-playfair bg-gradient-to-br from-[var(--gold-bright)] to-[var(--gold)] bg-clip-text text-transparent tracking-wide">
+            KIF
+          </span>
+          <span className="font-sans font-bold text-[var(--frost)]">Academy</span>
+        </Link>
