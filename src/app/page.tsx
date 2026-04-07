@@ -207,52 +207,29 @@ export default function HomePage() {
       </section>
 
       {/* Why Choose Us */}
-      <section id="why-us" className="py-24 px-4 sm:px-6 lg:px-8 border-y border-[var(--edge)] relative">
+      <section id="why-us" className="py-24 px-4 sm:px-6 lg:px-8 border-y border-[var(--edge)] relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--gold)]/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 hero-grid opacity-20 pointer-events-none" />
         <div className="max-w-7xl mx-auto relative">
           <div className="text-center mb-16">
+            <p className="text-[10px] font-mono tracking-widest text-[var(--gold)] uppercase mb-3">Why KIF</p>
             <h2 className="text-4xl sm:text-5xl font-black font-playfair text-[var(--frost)] mb-6">
               Why Choose <span className="text-[var(--gold)] italic">KIF Academy?</span>
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--edge)]">
             {[
-              {
-                icon: "🎯",
-                title: "Industry-Relevant",
-                desc: "Our courses are designed in collaboration with industry experts and updated regularly to reflect current market demands.",
-              },
-              {
-                icon: "🛠️",
-                title: "Hands-On Projects",
-                desc: "Build real-world projects that go directly into your portfolio and demonstrate your skills to potential employers.",
-              },
-              {
-                icon: "🏆",
-                title: "Verifiable Certificate",
-                desc: "Earn a verifiable certificate upon completing the course that you can share on LinkedIn and your resume.",
-              },
-              {
-                icon: "💬",
-                title: "Doubt Resolution",
-                desc: "Get your questions answered through our dedicated support channels and community forums.",
-              },
-              {
-                icon: "♾️",
-                title: "Lifetime Access",
-                desc: "Once you purchase a course, you have lifetime access to all materials including future updates at no extra cost.",
-              },
-              {
-                icon: "🚀",
-                title: "Career Support",
-                desc: "Resume building workshops, mock interviews, and job referrals to help you land your dream tech job.",
-              },
-            ].map(({ icon, title, desc }) => (
-              <div
-                key={title}
-                className="p-10 bg-[var(--ink)] hover:bg-[var(--surface)] transition-all duration-300 group"
-              >
-                <div className="text-3xl mb-5 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all origin-left">{icon}</div>
+              { icon: Target,        title: "Industry-Relevant",    desc: "Courses designed in collaboration with industry experts and updated regularly to reflect current market demands." },
+              { icon: Wrench,        title: "Hands-On Projects",     desc: "Build real-world projects that go directly into your portfolio and demonstrate your skills to potential employers." },
+              { icon: Trophy,        title: "Verifiable Certificate",desc: "Earn a verifiable certificate upon completing the course that you can share on LinkedIn and your resume." },
+              { icon: MessageCircle, title: "Doubt Resolution",      desc: "Get your questions answered through our dedicated support channels and community forums." },
+              { icon: Infinity,      title: "Lifetime Access",       desc: "Purchase once and access all materials including future updates forever, at no extra cost." },
+              { icon: Rocket,        title: "Career Support",        desc: "Resume workshops, mock interviews, and job referrals to help you land your dream tech role." },
+            ].map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="gradient-border p-10 bg-[var(--ink)] hover:bg-[var(--surface)] transition-all duration-300 group cursor-default">
+                <div className="h-12 w-12 rounded-sm bg-[var(--gold-dim)] border border-[var(--gold)]/20 flex items-center justify-center mb-5 group-hover:border-[var(--gold)]/60 group-hover:bg-[var(--gold)]/20 group-hover:scale-110 transition-all duration-300">
+                  <Icon className="h-6 w-6 text-[var(--gold)]" />
+                </div>
                 <h3 className="text-[var(--frost)] font-bold font-playfair text-xl mb-3 group-hover:text-[var(--gold)] transition-colors">{title}</h3>
                 <p className="text-[var(--frost-faint)] text-sm leading-relaxed">{desc}</p>
               </div>
