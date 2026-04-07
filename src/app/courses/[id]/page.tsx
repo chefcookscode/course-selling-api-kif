@@ -111,10 +111,10 @@ export default async function CourseDetailPage({ params }: PageProps) {
               </div>
 
               {/* Highlights */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {course.highlights.map((h) => (
-                  <div key={h} className="flex items-start gap-3 text-sm text-[var(--frost-dim)] font-sans">
-                    <CheckCircle2 className="h-5 w-5 text-[var(--gold)] mt-0 shrink-0" />
+                  <div key={h} className="flex items-start gap-3 text-sm text-[var(--frost-dim)] font-sans p-3 rounded-sm bg-[var(--surface)] border border-[var(--edge)] hover:border-[var(--gold)]/30 hover:bg-[var(--surface-raised)] hover:text-[var(--frost)] transition-all duration-200 group">
+                    <CheckCircle2 className="h-4 w-4 text-[var(--gold)] mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                     <span className="leading-relaxed">{h}</span>
                   </div>
                 ))}
