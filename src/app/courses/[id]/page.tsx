@@ -81,13 +81,21 @@ export default async function CourseDetailPage({ params }: PageProps) {
                   {course.badge}
                 </Badge>
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black font-playfair text-[var(--frost)] leading-[1.1] tracking-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black font-playfair text-[var(--frost)] leading-[1.1] tracking-tight animate-slide-up">
                 {course.title}
               </h1>
               <p className="text-lg text-[var(--frost-faint)] leading-relaxed max-w-2xl font-sans">
                 {course.fullDescription}
               </p>
+
+              {/* Rating + meta row */}
               <div className="flex flex-wrap items-center gap-6 text-sm font-mono tracking-wider">
+                <div className="flex items-center gap-1.5">
+                  {[1,2,3,4,5].map((s) => (
+                    <Star key={s} className={`h-4 w-4 ${s <= Math.round(course.rating) ? "text-[var(--gold)] fill-[var(--gold)]" : "text-[var(--edge-bright)]"}`} />
+                  ))}
+                  <span className="text-[var(--gold)] font-bold ml-1">{course.rating}</span>
+                </div>
                 <div className="flex items-center gap-2 text-[var(--frost-dim)]">
                   <Clock className="h-4 w-4 text-[var(--gold)]" />
                   <span>{course.duration}</span>
