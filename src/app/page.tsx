@@ -62,14 +62,19 @@ export default function HomePage() {
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-48 rounded-full bg-[var(--gold)]/8 blur-[80px]" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 text-center">
-          <div className="inline-flex items-center gap-2 font-mono px-4 py-1.5 rounded-full border border-[var(--gold)]/30 bg-[var(--gold)]/10 text-[var(--gold)] text-xs font-semibold uppercase tracking-widest mb-8">
-            <Zap className="h-3.5 w-3.5" />
+          {/* Pulsing badge */}
+          <div className="inline-flex items-center gap-2 font-mono px-4 py-1.5 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 text-[var(--gold)] text-xs font-semibold uppercase tracking-widest mb-8 animate-scale-in">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--gold)] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--gold)]" />
+            </span>
             Industry-Aligned Tech Courses
           </div>
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-black font-playfair text-[var(--frost)] leading-[1.1] mb-6 tracking-tight">
+
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-black font-playfair text-[var(--frost)] leading-[1.1] mb-6 tracking-tight animate-slide-up">
             Build Real Skills.
             <br />
-            <span className="bg-gradient-to-r from-[var(--gold-bright)] to-[var(--gold)] bg-clip-text text-transparent italic pr-2">
+            <span className="shimmer-text italic pr-2">
               Launch Your Career.
             </span>
           </h1>
