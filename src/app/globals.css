@@ -77,6 +77,16 @@ html {
   50%       { background-position: 100% 50%; }
 }
 
+@keyframes goldPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232,97,26,0.45); }
+  50%       { box-shadow: 0 0 0 10px rgba(232,97,26,0); }
+}
+
+@keyframes shimmerGold {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
 /* Radix Dialog animations */
 @keyframes fadeIn {
   from { opacity: 0; }
