@@ -48,28 +48,20 @@ export default async function CourseDetailPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[var(--ink)]">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-40 border-b border-[var(--edge)] bg-[var(--ink)]/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-4">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-[var(--gold)] flex items-center justify-center border border-[var(--edge-bright)]">
-              <BookOpen className="h-4 w-4 text-[var(--ink)]" />
-            </div>
-            <span className="text-xl font-black font-playfair bg-gradient-to-br from-[var(--gold-bright)] to-[var(--gold)] bg-clip-text text-transparent tracking-wide">
-              KIF
-            </span>
-            <span className="font-sans font-bold text-[var(--frost)]">Academy</span>
+      <AnimatedNavbar />
+
+      {/* Breadcrumb strip */}
+      <div className="border-b border-[var(--edge)] bg-[var(--ink-deep)]/60 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center gap-3">
+          <Link href="/" className="text-[var(--frost-faint)] hover:text-[var(--gold)] transition-colors text-xs font-mono tracking-widest uppercase">Home</Link>
+          <span className="text-[var(--edge-bright)] font-mono text-xs">/</span>
+          <Link href="/#courses" className="flex items-center gap-1 text-[var(--frost-faint)] hover:text-[var(--gold)] transition-colors text-xs font-mono tracking-widest uppercase">
+            <ChevronLeft className="h-3 w-3" /> Courses
           </Link>
-          <span className="text-[var(--edge-bright)] font-mono">/</span>
-          <Link
-            href="/#courses"
-            className="flex items-center gap-1 text-[var(--frost-faint)] hover:text-[var(--gold)] transition-colors text-sm font-mono tracking-widest uppercase"
-          >
-            <ChevronLeft className="h-3.5 w-3.5" />
-            All Courses
-          </Link>
+          <span className="text-[var(--edge-bright)] font-mono text-xs">/</span>
+          <span className="text-[var(--gold)] text-xs font-mono tracking-widest uppercase truncate">{course.title}</span>
         </div>
-      </nav>
+      </div>
 
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-b from-[var(--ink-deep)] to-[var(--ink)]">
