@@ -78,17 +78,17 @@ export default function HomePage() {
               Launch Your Career.
             </span>
           </h1>
-          <p className="text-lg text-[var(--frost-faint)] max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
+          <p className="text-lg text-[var(--frost-faint)] max-w-2xl mx-auto mb-10 leading-relaxed font-sans animate-slide-up" style={{animationDelay:"0.12s"}}>
             Expert-led courses in the most in-demand technologies. Structured
             curriculum, hands-on projects, and lifetime access.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="xl" className="font-semibold uppercase tracking-widest bg-[var(--gold)] hover:bg-[var(--gold-bright)] text-[var(--ink)] rounded-sm py-6" asChild>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{animationDelay:"0.22s"}}>
+            <Button size="xl" className="font-semibold uppercase tracking-widest bg-[var(--gold)] hover:bg-[var(--gold-bright)] hover:scale-105 active:scale-95 text-[var(--ink)] rounded-sm py-6 shadow-lg shadow-[var(--gold)]/25 transition-all" asChild>
               <Link href="#courses">
                 Explore Courses <ChevronRight className="h-5 w-5 ml-2" />
               </Link>
             </Button>
-            <Button size="xl" variant="outline" className="font-semibold uppercase tracking-widest text-[var(--frost-dim)] border-[var(--edge-bright)] hover:border-[var(--gold)] hover:text-[var(--gold)] rounded-sm py-6 bg-transparent" asChild>
+            <Button size="xl" variant="outline" className="font-semibold uppercase tracking-widest text-[var(--frost-dim)] border-[var(--edge-bright)] hover:border-[var(--gold)] hover:text-[var(--gold)] hover:scale-105 active:scale-95 rounded-sm py-6 bg-transparent transition-all" asChild>
               <Link href="#why-us">Learn More</Link>
             </Button>
           </div>
