@@ -238,6 +238,30 @@ export default function HomePage() {
         </div>
       </section>
 
+      </section>
+
+      {/* CTA Banner */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-[var(--ink-deep)]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_50%,rgba(232,97,26,0.12),transparent)] pointer-events-none" />
+        <div className="absolute inset-0 hero-grid opacity-25 pointer-events-none" />
+        <div className="relative max-w-3xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 font-mono px-4 py-1.5 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 text-[var(--gold)] text-xs uppercase tracking-widest mb-8">
+            <Zap className="h-3.5 w-3.5" />
+            Limited Seats Available
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-black font-playfair text-[var(--frost)] mb-6 leading-tight">
+            Ready to <span className="shimmer-text italic">Transform</span>
+            <br />Your Career?
+          </h2>
+          <p className="text-[var(--frost-faint)] text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+            Join 12,000+ students already learning with KIF Academy. Expert mentorship, hands-on projects, and a certificate that gets you hired.
+          </p>
+          <Button size="xl" className="bg-[var(--gold)] text-[var(--ink)] hover:bg-[var(--gold-bright)] hover:scale-105 active:scale-95 transition-all rounded-sm font-semibold uppercase tracking-widest shadow-xl shadow-[var(--gold)]/30 animate-gold-pulse" asChild>
+            <Link href="#courses">Browse All Courses <ChevronRight className="h-5 w-5 ml-2" /></Link>
+          </Button>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-12 px-4 bg-[var(--ink-deep)] text-center text-[var(--frost-faint)] text-sm border-t border-[var(--edge)]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
