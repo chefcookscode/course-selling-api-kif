@@ -131,6 +131,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
 
       {/* Syllabus Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <p className="text-[10px] font-mono tracking-widest text-[var(--gold)] uppercase mb-3">What You&apos;ll Learn</p>
         <h2 className="text-3xl sm:text-4xl font-black font-playfair text-[var(--frost)] mb-10">
           Course <span className="text-[var(--gold)] italic">Syllabus</span>
         </h2>
@@ -138,18 +139,18 @@ export default async function CourseDetailPage({ params }: PageProps) {
           {course.syllabus.map((module, idx) => (
             <div
               key={module.module}
-              className="rounded-sm border border-[var(--edge)] bg-[var(--surface)] hover:border-[var(--gold)]/30 transition-colors overflow-hidden group"
+              className="glow-card gradient-border rounded-sm border border-[var(--edge)] bg-[var(--surface)] overflow-hidden group"
             >
-              <div className="flex items-center gap-4 px-6 py-5 border-b border-[var(--edge)] bg-[var(--ink)]/50 group-hover:bg-[var(--gold-dim)]/20 transition-colors">
-                <span className="flex items-center justify-center h-8 w-8 rounded-none bg-[var(--ink)] border border-[var(--gold)]/30 text-[var(--gold)] font-mono text-xs font-bold shrink-0">
-                  {idx + 1}
+              <div className="flex items-center gap-4 px-6 py-5 border-b border-[var(--edge)] bg-[var(--ink)]/60 group-hover:bg-[var(--gold-dim)]/15 transition-colors">
+                <span className="flex items-center justify-center h-9 w-9 rounded-sm bg-[var(--ink)] border border-[var(--gold)]/30 text-[var(--gold)] font-mono text-sm font-bold shrink-0 group-hover:border-[var(--gold)]/60 group-hover:bg-[var(--gold-dim)]/40 transition-all">
+                  {String(idx + 1).padStart(2, "0")}
                 </span>
-                <h3 className="text-[var(--frost)] font-bold font-playfair text-lg tracking-wide">{module.module}</h3>
+                <h3 className="text-[var(--frost)] font-bold font-playfair text-lg tracking-wide group-hover:text-[var(--gold)] transition-colors">{module.module}</h3>
               </div>
               <ul className="px-6 py-5 grid grid-cols-1 sm:grid-cols-2 gap-3 bg-[var(--surface)]">
                 {module.topics.map((topic) => (
-                  <li key={topic} className="flex items-start gap-2 text-[var(--frost-faint)] text-sm font-sans">
-                    <span className="text-[var(--gold)] mt-1 shrink-0 px-1 font-mono text-[10px]">▸</span>
+                  <li key={topic} className="flex items-start gap-2 text-[var(--frost-faint)] text-sm font-sans hover:text-[var(--frost-dim)] transition-colors">
+                    <span className="text-[var(--gold)] mt-1 shrink-0 font-mono text-[10px]">▸</span>
                     <span className="leading-relaxed">{topic}</span>
                   </li>
                 ))}
