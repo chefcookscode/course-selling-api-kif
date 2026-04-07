@@ -96,17 +96,19 @@ export default function HomePage() {
           {/* Stats */}
           <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-[1px] max-w-4xl mx-auto bg-[var(--edge)] border-y border-[var(--edge)]">
             {[
-              { icon: Users, label: "Students Enrolled", value: "12,000+" },
-              { icon: BookOpen, label: "Expert Courses", value: "5+" },
-              { icon: Award, label: "Certificates Issued", value: "8,500+" },
-              { icon: Star, label: "Average Rating", value: "4.8/5" },
+              { icon: Users,    label: "Students Enrolled",  value: "12,000+" },
+              { icon: BookOpen, label: "Expert Courses",      value: "5+"      },
+              { icon: Award,    label: "Certificates Issued", value: "8,500+"  },
+              { icon: Star,     label: "Average Rating",      value: "4.8/5"   },
             ].map(({ icon: Icon, label, value }) => (
               <div
                 key={label}
-                className="p-8 bg-[var(--ink)] hover:bg-[var(--surface)] transition-colors text-center"
+                className="p-8 bg-[var(--ink)] hover:bg-[var(--surface)] transition-all duration-300 text-center group cursor-default"
               >
-                <Icon className="h-6 w-6 text-[var(--gold)] mx-auto mb-4" />
-                <p className="text-3xl font-black font-playfair text-[var(--gold)]">{value}</p>
+                <div className="h-10 w-10 rounded-full bg-[var(--gold-dim)] border border-[var(--gold)]/20 flex items-center justify-center mx-auto mb-4 group-hover:border-[var(--gold)]/50 group-hover:bg-[var(--gold)]/20 transition-all duration-300">
+                  <Icon className="h-5 w-5 text-[var(--gold)]" />
+                </div>
+                <p className="text-3xl font-black font-playfair text-[var(--gold)] group-hover:scale-110 transition-transform duration-300 inline-block">{value}</p>
                 <p className="text-[10px] font-mono tracking-widest text-[var(--frost-faint)] mt-2 uppercase">{label}</p>
               </div>
             ))}
