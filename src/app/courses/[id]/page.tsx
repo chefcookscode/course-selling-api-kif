@@ -131,7 +131,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
 
       {/* Syllabus Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <p className="text-[10px] font-mono tracking-widest text-[var(--gold)] uppercase mb-3">What You&apos;ll Learn</p>
+        <p className="text-[10px] font-mono tracking-widest text-[var(--gold)] uppercase mb-3" role="doc-subtitle">What You&apos;ll Learn</p>
         <h2 className="text-3xl sm:text-4xl font-black font-playfair text-[var(--frost)] mb-10">
           Course <span className="text-[var(--gold)] italic">Syllabus</span>
         </h2>
