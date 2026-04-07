@@ -34,11 +34,11 @@ export default function CourseDetailClient({ course }: Props) {
           {/* CTA Button */}
           <Button
             size="xl"
-            className="w-full text-sm font-semibold uppercase tracking-widest bg-[var(--gold)] hover:bg-[var(--gold-bright)] text-[var(--ink)] rounded-sm"
+            className="w-full text-sm font-semibold uppercase tracking-widest bg-[var(--gold)] hover:bg-[var(--gold-bright)] hover:scale-105 active:scale-95 text-[var(--ink)] rounded-sm transition-all shadow-lg shadow-[var(--gold)]/25 animate-gold-pulse"
             onClick={() => setPaymentOpen(true)}
           >
             <Zap className="h-4 w-4 mr-2" />
-            PAY NOW
+            PAY NOW — ₹{course.price.toLocaleString("en-IN")}
           </Button>
 
           {/* Trust Badges */}
