@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import AnimatedNavbar from "@/components/AnimatedNavbar";
 import {
   Clock,
   BarChart2,
@@ -19,6 +20,12 @@ import {
   BookOpen,
   Award,
   Zap,
+  Target,
+  Wrench,
+  Trophy,
+  MessageCircle,
+  Infinity,
+  Rocket,
 } from "lucide-react";
 
 const badgeVariantMap: Record<
