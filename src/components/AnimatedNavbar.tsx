@@ -41,3 +41,35 @@ export default function AnimatedNavbar() {
           </span>
           <span className="font-sans font-bold text-[var(--frost)]">Academy</span>
         </Link>
+
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-7 text-sm text-[var(--frost-dim)] font-medium uppercase tracking-wider">
+          {[
+            { label: "Courses", href: "#courses" },
+            { label: "Why Us",  href: "#why-us" },
+          ].map(({ label, href }) => (
+            <Link
+              key={label}
+              href={href}
+              className="hover-underline hover:text-[var(--gold)] transition-colors duration-200"
+            >
+              {label}
+            </Link>
+          ))}
+          <Button
+            size="sm"
+            className="bg-[var(--gold)] text-[var(--ink)] hover:bg-[var(--gold-bright)] hover:scale-105 active:scale-95 transition-all rounded-sm font-semibold uppercase tracking-wider border-none shadow-md shadow-[var(--gold)]/20"
+          >
+            Sign In
+          </Button>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden p-2 text-[var(--frost-dim)] hover:text-[var(--gold)] transition-colors"
+          onClick={() => setMobileOpen((v) => !v)}
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
