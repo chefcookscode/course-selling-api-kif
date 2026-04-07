@@ -15,9 +15,9 @@ export default function CourseDetailClient({ course }: Props) {
 
   return (
     <>
-      <div className="rounded-sm border border-[var(--edge)] bg-[var(--surface)] shadow-2xl shadow-black/50 overflow-hidden sticky top-24 font-sans">
-        {/* Card top glow */}
-        <div className="h-1 bg-gradient-to-r from-[var(--gold)] to-[var(--gold-bright)]" />
+      <div className="glow-card rounded-sm border border-[var(--edge)] bg-[var(--surface)] shadow-2xl shadow-black/60 overflow-hidden sticky top-24 font-sans">
+        {/* Animated gradient top bar */}
+        <div className="h-[3px] bg-gradient-to-r from-[var(--gold)] via-[var(--gold-bright)] to-[var(--gold)] bg-[length:200%_auto] animate-[shimmerGold_3s_linear_infinite]" />
 
         <div className="p-6 space-y-6">
           {/* Price */}
