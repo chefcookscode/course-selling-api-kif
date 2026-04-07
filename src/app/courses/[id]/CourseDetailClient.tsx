@@ -15,9 +15,9 @@ export default function CourseDetailClient({ course }: Props) {
 
   return (
     <>
-      <div className="rounded-sm border border-[var(--edge)] bg-[var(--surface)] shadow-2xl shadow-black/50 overflow-hidden sticky top-24 font-sans">
-        {/* Card top glow */}
-        <div className="h-1 bg-gradient-to-r from-[var(--gold)] to-[var(--gold-bright)]" />
+      <div className="glow-card rounded-sm border border-[var(--edge)] bg-[var(--surface)] shadow-2xl shadow-black/60 overflow-hidden sticky top-24 font-sans">
+        {/* Animated gradient top bar */}
+        <div className="h-[3px] bg-gradient-to-r from-[var(--gold)] via-[var(--gold-bright)] to-[var(--gold)] bg-[length:200%_auto] animate-[shimmerGold_3s_linear_infinite]" />
 
         <div className="p-6 space-y-6">
           {/* Price */}
@@ -34,11 +34,11 @@ export default function CourseDetailClient({ course }: Props) {
           {/* CTA Button */}
           <Button
             size="xl"
-            className="w-full text-sm font-semibold uppercase tracking-widest bg-[var(--gold)] hover:bg-[var(--gold-bright)] text-[var(--ink)] rounded-sm"
+            className="w-full text-sm font-semibold uppercase tracking-widest bg-[var(--gold)] hover:bg-[var(--gold-bright)] hover:scale-105 active:scale-95 text-[var(--ink)] rounded-sm transition-all shadow-lg shadow-[var(--gold)]/25 animate-gold-pulse"
             onClick={() => setPaymentOpen(true)}
           >
             <Zap className="h-4 w-4 mr-2" />
-            PAY NOW
+            PAY NOW — ₹{course.price.toLocaleString("en-IN")}
           </Button>
 
           {/* Trust Badges */}
@@ -51,7 +51,7 @@ export default function CourseDetailClient({ course }: Props) {
           <div className="border-t border-[var(--edge)]" />
 
           {/* Course Meta */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h4 className="text-[var(--frost)] font-bold font-playfair text-base tracking-wide">
               This course includes:
             </h4>
@@ -62,8 +62,8 @@ export default function CourseDetailClient({ course }: Props) {
               { emoji: "💬", text: "Community & doubt support" },
               { emoji: "📱", text: "Access on mobile, tablet & desktop" },
             ].map(({ emoji, text }) => (
-              <div key={text} className="flex items-start gap-3 text-sm text-[var(--frost-dim)]">
-                <span className="text-base leading-none mt-0.5 opacity-80">{emoji}</span>
+              <div key={text} className="flex items-start gap-3 text-sm text-[var(--frost-dim)] group/item hover:text-[var(--frost)] transition-colors">
+                <span className="text-base leading-none mt-0.5 opacity-80 group-hover/item:opacity-100 group-hover/item:scale-110 transition-all">{emoji}</span>
                 <span className="leading-relaxed">{text}</span>
               </div>
             ))}
