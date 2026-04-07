@@ -182,3 +182,20 @@ html {
   background-clip: text;
   animation: shimmerGold 3.5s linear infinite;
 }
+
+/* ─── Animate helper classes ────────────────────────────── */
+.animate-float     { animation: float 4s ease-in-out infinite; }
+.animate-float-slow{ animation: float 6s ease-in-out infinite; }
+.animate-slide-up  { animation: slideUpFade 0.55s ease both; }
+.animate-scale-in  { animation: scaleIn     0.45s ease both; }
+.animate-gold-pulse{ animation: goldPulse   2s   ease-in-out infinite; }
+
+/* ─── Scrollbar (theme-matched) ─────────────────────────── */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ink-deep); }
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dim);
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
