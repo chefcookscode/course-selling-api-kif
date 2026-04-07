@@ -65,17 +65,19 @@ export default async function CourseDetailPage({ params }: PageProps) {
 
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-b from-[var(--ink-deep)] to-[var(--ink)]">
+        {/* dot-grid + orbs */}
+        <div className="absolute inset-0 hero-grid opacity-30 pointer-events-none" />
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-[var(--gold)]/10 blur-[100px]" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-[var(--blue)]/10 blur-[100px]" />
+          <div className="absolute -top-24 -right-24 w-[450px] h-[450px] rounded-full bg-[var(--gold)]/12 blur-[120px] animate-float-slow" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-[var(--blue)]/10 blur-[100px] animate-float" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="flex flex-col lg:flex-row gap-12 lg:items-start">
             {/* Left: Course Info */}
-            <div className="flex-1 space-y-8">
+            <div className="flex-1 space-y-7">
               <div className="flex items-center gap-4">
-                <span className="text-5xl border border-[var(--edge)] bg-[var(--surface)] p-3 rounded-sm">{course.icon}</span>
-                <Badge className="font-mono text-[10px] uppercase tracking-widest bg-[var(--gold-dim)] text-[var(--gold)] border border-[var(--gold)]/30 rounded-none hover:bg-[var(--gold)] hover:text-[var(--ink)] px-3 py-1">
+                <span className="text-5xl border border-[var(--edge)] bg-[var(--surface)] p-3 rounded-sm hover:border-[var(--gold)]/50 hover:bg-[var(--gold-dim)]/30 transition-all duration-300">{course.icon}</span>
+                <Badge className="font-mono text-[10px] uppercase tracking-widest bg-[var(--gold-dim)] text-[var(--gold)] border border-[var(--gold)]/30 rounded-none hover:bg-[var(--gold)] hover:text-[var(--ink)] transition-colors px-3 py-1">
                   {course.badge}
                 </Badge>
               </div>
