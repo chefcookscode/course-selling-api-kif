@@ -192,9 +192,9 @@ export default function HomePage() {
                     <p className="text-2xl font-bold font-playfair text-[var(--frost)] group-hover:text-[var(--gold)] transition-colors">
                       ₹{course.price.toLocaleString("en-IN")}
                     </p>
-                    <p className="text-[10px] font-mono text-[var(--frost-faint)] uppercase tracking-widest mt-1">one-time</p>
+                    <p className="text-[10px] font-mono text-[var(--frost-faint)] uppercase tracking-widest mt-1">one-time · no hidden fees</p>
                   </div>
-                  <Button asChild size="sm" className="bg-[var(--gold)] text-[var(--ink)] hover:bg-[var(--gold-bright)] rounded-sm font-semibold uppercase tracking-wider text-xs">
+                  <Button asChild size="sm" className="bg-[var(--gold)] text-[var(--ink)] hover:bg-[var(--gold-bright)] hover:scale-105 active:scale-95 transition-all rounded-sm font-semibold uppercase tracking-wider text-xs shadow-md shadow-[var(--gold)]/20">
                     <Link href={`/courses/${course.id}`}>
                       Details <ChevronRight className="h-3.5 w-3.5 ml-1" />
                     </Link>
