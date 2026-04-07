@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { courses, getCourseById } from "@/lib/courses";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Clock, BarChart2, CheckCircle2, ChevronLeft } from "lucide-react";
+import { BookOpen, Clock, BarChart2, CheckCircle2, ChevronLeft, Star } from "lucide-react";
 import CourseDetailClient from "./CourseDetailClient";
+import AnimatedNavbar from "@/components/AnimatedNavbar";
 
 interface PageProps {
   params: Promise<{ id: string }>;
