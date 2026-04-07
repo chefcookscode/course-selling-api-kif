@@ -48,37 +48,18 @@ const levelColorMap: Record<string, string> = {
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-[var(--ink)]">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-40 border-b border-[var(--edge)] bg-[var(--ink)]/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-[var(--gold)] flex items-center justify-center border border-[var(--edge-bright)]">
-              <BookOpen className="h-4 w-4 text-[var(--ink)]" />
-            </div>
-            <span className="text-2xl font-black font-playfair bg-gradient-to-br from-[var(--gold-bright)] to-[var(--gold)] bg-clip-text text-transparent tracking-wide">
-              KIF
-            </span>
-            <span className="font-sans font-bold text-[var(--frost)]">Academy</span>
-          </Link>
-          <div className="hidden md:flex items-center gap-6 text-sm text-[var(--frost-dim)] font-medium uppercase tracking-wider">
-            <Link href="#courses" className="hover:text-[var(--gold)] transition-colors">
-              Courses
-            </Link>
-            <Link href="#why-us" className="hover:text-[var(--gold)] transition-colors">
-              Why Us
-            </Link>
-            <Button size="sm" className="bg-[var(--gold)] text-[var(--ink)] hover:bg-[var(--gold-bright)] border-none rounded-sm font-semibold uppercase tracking-wider">
-              Sign In
-            </Button>
-          </div>
-        </div>
-      </nav>
+      <AnimatedNavbar />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
+        {/* Dot-grid background pattern */}
+        <div className="absolute inset-0 hero-grid opacity-40 pointer-events-none" />
+
+        {/* Ambient orbs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-[var(--gold)]/20 blur-[100px]" />
-          <div className="absolute top-20 -left-40 w-80 h-80 rounded-full bg-[var(--blue)]/20 blur-[100px]" />
+          <div className="absolute -top-48 -right-48 w-[500px] h-[500px] rounded-full bg-[var(--gold)]/20 blur-[120px] animate-float-slow" />
+          <div className="absolute top-32 -left-48 w-[400px] h-[400px] rounded-full bg-[var(--blue)]/15 blur-[100px] animate-float" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-48 rounded-full bg-[var(--gold)]/8 blur-[80px]" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 text-center">
           <div className="inline-flex items-center gap-2 font-mono px-4 py-1.5 rounded-full border border-[var(--gold)]/30 bg-[var(--gold)]/10 text-[var(--gold)] text-xs font-semibold uppercase tracking-widest mb-8">
