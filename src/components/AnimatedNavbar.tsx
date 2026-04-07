@@ -73,3 +73,27 @@ export default function AnimatedNavbar() {
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
+
+      {/* Mobile dropdown */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ${
+          mobileOpen ? "max-h-48 border-t border-[var(--edge)]" : "max-h-0"
+        }`}
+      >
+        <div className="px-4 py-4 flex flex-col gap-4 bg-[var(--ink)]/95 backdrop-blur-xl">
+          <Link href="#courses" onClick={() => setMobileOpen(false)}
+            className="text-[var(--frost-dim)] hover:text-[var(--gold)] transition-colors text-sm uppercase tracking-wider font-medium">
+            Courses
+          </Link>
+          <Link href="#why-us" onClick={() => setMobileOpen(false)}
+            className="text-[var(--frost-dim)] hover:text-[var(--gold)] transition-colors text-sm uppercase tracking-wider font-medium">
+            Why Us
+          </Link>
+          <Button size="sm" className="w-full bg-[var(--gold)] text-[var(--ink)] hover:bg-[var(--gold-bright)] rounded-sm font-semibold uppercase tracking-wider">
+            Sign In
+          </Button>
+        </div>
+      </div>
+    </nav>
+  );
+}
